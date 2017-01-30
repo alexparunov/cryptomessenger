@@ -1,3 +1,9 @@
 <resources>
   <string name="app_name">CryptoMessenger</string>
+  <string name="select_image_title">Cover Image</string>
+  <string name="secret_message_title">Secret Message Type</string>
+  <string name="rb_secret_text">Text</string>
+  <string name="rb_secret_image">Image</string>
+  <string name="b_secret_text">Perform Steganography</string>
+  <string name="et_secret_text">Message&#8230;</string>
 </resources>
