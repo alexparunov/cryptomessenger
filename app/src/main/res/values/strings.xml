@@ -12,6 +12,7 @@
   <string name="take_image_dialog">Take Photo</string>
   <string name="select_image_dialog">Select Image</string>
   <string name="cancel">Cancel</string>
+  <string name="choose_image">Choose Image</string>
 
   <!--Messages-->
   <string name="encrypted_success">Message is successfully encrypted</string>

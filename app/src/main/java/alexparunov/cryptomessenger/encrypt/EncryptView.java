@@ -24,4 +24,8 @@ public interface EncryptView {
 
   void stopProgressDialog();
 
+  void openCamera();
+
+  void chooseImage();
+
 }

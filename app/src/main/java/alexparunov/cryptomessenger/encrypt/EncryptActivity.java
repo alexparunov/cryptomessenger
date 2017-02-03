@@ -1,15 +1,22 @@
 package alexparunov.cryptomessenger.encrypt;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +26,8 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 import alexparunov.cryptomessenger.R;
 import alexparunov.cryptomessenger.utils.Constants;
@@ -54,7 +63,7 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
   }
 
   @OnClick({R.id.ivCoverImage, R.id.ivSecretImage})
-  public void onCoverSecretImageClick() {
+  public void onCoverSecretImageClick(View view) {
 
     final CharSequence[] items = {
       getString(R.string.take_image_dialog),
@@ -79,11 +88,11 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
               Constants.PERMISSIONS_CAMERA);
 
           } else {
-            //openCamera();
+            openCamera();
           }
-        } else if(items[item].equals(getString(R.string.select_image_dialog))) {
+        } else if (items[item].equals(getString(R.string.select_image_dialog))) {
 
-          if(ContextCompat.checkSelfPermission(getApplicationContext(),
+          if (ContextCompat.checkSelfPermission(getApplicationContext(),
             Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(EncryptActivity.this,
@@ -91,7 +100,7 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
               Constants.PERMISSIONS_EXTERNAL_STORAGE);
 
           } else {
-            //chooseImage()
+            chooseImage();
           }
         }
       }
@@ -104,11 +113,18 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
       }
     });
 
+    if (view.getId() == R.id.ivCoverImage) {
+      whichImage = Constants.COVER_IMAGE;
+    } else if (view.getId() == R.id.ivSecretImage) {
+      whichImage = Constants.SECRET_IMAGE;
+    }
+
     builder.show();
   }
 
   ProgressDialog progressDialog;
   EncryptPresenter mPresenter;
+  int whichImage = -1;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +150,79 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
     if (actionBar != null) {
       actionBar.setDisplayHomeAsUpEnabled(true);
     }
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+    switch (requestCode) {
+      case Constants.PERMISSIONS_CAMERA:
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+          grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+          openCamera();
+        }
+        break;
+      case Constants.PERMISSIONS_EXTERNAL_STORAGE:
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+          chooseImage();
+        }
+        break;
+    }
+  }
+
+  @Override
+  public void openCamera() {
+    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    File file = new File(android.os.Environment
+      .getExternalStorageDirectory(), "temp.jpg");
+
+    Uri imageUri = FileProvider.getUriForFile(this, "alexparunov", file);
+
+    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+    startActivityForResult(intent, Constants.REQUEST_CAMERA);
+  }
+
+  @Override
+  public void chooseImage() {
+    Intent intent = new Intent(
+      Intent.ACTION_PICK,
+      android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+    intent.setType("image/*");
+    startActivityForResult(
+      Intent.createChooser(intent, getString(R.string.choose_image)),
+      Constants.SELECT_FILE);
+  }
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+
+    if (resultCode == RESULT_OK) {
+      if (requestCode == Constants.REQUEST_CAMERA) {
+        if (whichImage == Constants.COVER_IMAGE) {
+          mPresenter.selectCoverImageCamera();
+        } else if (whichImage == Constants.SECRET_IMAGE) {
+          mPresenter.selectSecretImageCamera();
+        }
+      } else if (requestCode == Constants.SELECT_FILE) {
+        Uri selectedImageUri = data.getData();
+        String tempPath = getPath(selectedImageUri, EncryptActivity.this);
+        if (whichImage == Constants.COVER_IMAGE) {
+          mPresenter.selectCoverImage(tempPath);
+        } else if (whichImage == Constants.SECRET_IMAGE) {
+          mPresenter.selectSecretImage(tempPath);
+        }
+      }
+    }
+  }
+
+  public String getPath(Uri uri, Activity activity) {
+    String[] projection = {MediaStore.MediaColumns.DATA};
+    Cursor cursor = activity.managedQuery(uri, projection, null, null, null);
+    int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+    cursor.moveToFirst();
+    return cursor.getString(column_index);
   }
 
   @Override

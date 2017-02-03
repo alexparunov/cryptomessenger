@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="alexparunov.cryptomessenger">
-  
-  <uses-permission android:name="android.permission.CAMERA" />
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+  <uses-permission android:name="android.permission.CAMERA"/>
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
 
   <application
       android:allowBackup="true"
@@ -11,6 +12,17 @@
       android:label="@string/app_name"
       android:supportsRtl="true"
       android:theme="@style/AppTheme">
+
+    <!--If SDK is >=24 we have to use FileProvider to make change-->
+    <provider
+        android:name="android.support.v4.content.FileProvider"
+        android:authorities="alexparunov"
+        android:exported="false"
+        android:grantUriPermissions="true">
+      <meta-data
+          android:name="android.support.FILE_PROVIDER_PATHS"
+          android:resource="@xml/provider_paths"/>
+    </provider>
 
     <activity android:name=".MainActivity"
               android:screenOrientation="portrait">

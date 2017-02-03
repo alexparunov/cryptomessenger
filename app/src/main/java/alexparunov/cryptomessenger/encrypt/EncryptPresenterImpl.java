@@ -16,12 +16,22 @@ public class EncryptPresenterImpl implements EncryptPresenter {
   }
 
   @Override
-  public void selectCoverImage() {
+  public void selectCoverImage(String path) {
 
   }
 
   @Override
-  public void selectSecretImage() {
+  public void selectCoverImageCamera() {
+
+  }
+
+  @Override
+  public void selectSecretImage(String path) {
+
+  }
+
+  @Override
+  public void selectSecretImageCamera() {
 
   }
 

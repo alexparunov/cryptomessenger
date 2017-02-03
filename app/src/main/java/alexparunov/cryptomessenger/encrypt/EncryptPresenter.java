@@ -8,9 +8,11 @@ public interface EncryptPresenter {
 
   void showUserPreferredInfo();
 
-  void selectCoverImage();
+  void selectCoverImage(String path);
+  void selectCoverImageCamera();
 
-  void selectSecretImage();
+  void selectSecretImage(String path);
+  void selectSecretImageCamera();
 
   void saveUserPreferences();
 }
