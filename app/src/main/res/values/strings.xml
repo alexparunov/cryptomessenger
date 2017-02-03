@@ -1,4 +1,6 @@
 <resources>
+
+  <!--View Titles-->
   <string name="app_name">CryptoMessenger</string>
   <string name="select_image_title">Cover Image</string>
   <string name="secret_message_title">Secret Message Type</string>
@@ -7,4 +9,8 @@
   <string name="b_secret_text_encrypt">Encrypt</string>
   <string name="b_secret_text_decrypt">Decrypt</string>
   <string name="et_secret_text">Message&#8230;</string>
+
+  <!--Messages-->
+  <string name="encrypted_success">Message is successfully encrypted</string>
+  <string name="encrypted_fail">Failure during message encryption</string>
 </resources>
