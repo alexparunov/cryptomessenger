@@ -1,10 +1,6 @@
 package alexparunov.cryptomessenger.encrypt;
 
-import android.content.SharedPreferences;
-
-public interface EncryptPresenter {
-
-  SharedPreferences getSharedPreferences();
+interface EncryptPresenter {
 
   void selectCoverImage(String path);
   void selectCoverImageCamera();
@@ -12,4 +8,6 @@ public interface EncryptPresenter {
   void selectSecretImage(String path);
   void selectSecretImageCamera();
 
+  void encryptText();
+  void encryptImage();
 }

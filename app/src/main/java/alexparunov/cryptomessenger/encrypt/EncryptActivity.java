@@ -4,8 +4,10 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -56,9 +58,11 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
     if (rbImage.isChecked()) {
       etSecretMessage.setVisibility(View.GONE);
       ivSecretImage.setVisibility(View.VISIBLE);
+      secretMessageType = Constants.TYPE_IMAGE;
     } else if (rbText.isChecked()) {
       etSecretMessage.setVisibility(View.VISIBLE);
       ivSecretImage.setVisibility(View.GONE);
+      secretMessageType = Constants.TYPE_TEXT;
     }
   }
 
@@ -122,9 +126,19 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
     builder.show();
   }
 
-  ProgressDialog progressDialog;
-  EncryptPresenter mPresenter;
-  int whichImage = -1;
+  @OnClick(R.id.bEncrypt)
+  public void onButtonClick() {
+    if (secretMessageType == Constants.TYPE_IMAGE) {
+      mPresenter.encryptImage();
+    } else if (secretMessageType == Constants.TYPE_TEXT) {
+      mPresenter.encryptText();
+    }
+  }
+
+  private ProgressDialog progressDialog;
+  private EncryptPresenter mPresenter;
+  private int whichImage = -1;
+  private int secretMessageType = -1;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -250,7 +264,6 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
       .load(file)
       .placeholder(R.mipmap.ic_launcher)
       .into(ivSecretImage);
-
     progressDialog.dismiss();
   }
 
@@ -281,5 +294,10 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
     if (progressDialog != null && progressDialog.isShowing()) {
       progressDialog.dismiss();
     }
+  }
+
+  @Override
+  public SharedPreferences getSharedPrefs() {
+    return getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
   }
 }

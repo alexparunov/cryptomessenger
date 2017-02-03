@@ -1,11 +1,9 @@
 package alexparunov.cryptomessenger.encrypt;
 
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.os.Environment;
-import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -25,13 +23,8 @@ class EncryptPresenterImpl implements EncryptPresenter {
   }
 
   @Override
-  public SharedPreferences getSharedPreferences() {
-
-    return null;
-  }
-
-  @Override
   public void selectCoverImage(String tempPath) {
+    mView.showProgressDialog();
 
     Bitmap bitmap;
     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
@@ -100,6 +93,8 @@ class EncryptPresenterImpl implements EncryptPresenter {
 
   @Override
   public void selectSecretImage(String tempPath) {
+    mView.showProgressDialog();
+
     Bitmap bitmap;
     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
     bitmap = BitmapFactory.decodeFile(tempPath, bitmapOptions);
@@ -189,4 +184,13 @@ class EncryptPresenterImpl implements EncryptPresenter {
     mView.showToast(R.string.compress_error);
   }
 
+  @Override
+  public void encryptText() {
+    mView.showProgressDialog();
+  }
+
+  @Override
+  public void encryptImage() {
+    mView.showProgressDialog();
+  }
 }

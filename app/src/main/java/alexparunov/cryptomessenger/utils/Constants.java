@@ -14,4 +14,11 @@ public class Constants {
   public static final int COVER_IMAGE = 0;
   public static final int SECRET_IMAGE = 1;
 
+  //SharedPreferences
+  public static final String SHARED_PREF_NAME = "CryptoMessengerSP";
+  public static final String PREF_COVER = "coverImagePref";
+
+  // Secret Message Types
+  public static final int TYPE_TEXT = 0;
+  public static final int TYPE_IMAGE = 1;
 }

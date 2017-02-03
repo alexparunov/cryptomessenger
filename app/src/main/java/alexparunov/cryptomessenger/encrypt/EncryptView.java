@@ -1,5 +1,6 @@
 package alexparunov.cryptomessenger.encrypt;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 
 import java.io.File;
@@ -11,6 +12,8 @@ public interface EncryptView {
   Bitmap getCoverImage();
 
   Bitmap getSecretImage();
+
+  SharedPreferences getSharedPrefs();
 
   void initToolbar();
 
