@@ -231,11 +231,12 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
   }
 
   @Override
-  public void setCoverImage(String filePath) {
+  public void setCoverImage(File file) {
     Picasso.with(this)
-      .load(filePath)
+      .load(file)
       .placeholder(R.mipmap.ic_launcher)
       .into(ivCoverImage);
+    progressDialog.dismiss();
   }
 
   @Override
@@ -244,11 +245,13 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
   }
 
   @Override
-  public void setSecretImage(String filePath) {
+  public void setSecretImage(File file) {
     Picasso.with(this)
-      .load(filePath)
+      .load(file)
       .placeholder(R.mipmap.ic_launcher)
       .into(ivSecretImage);
+
+    progressDialog.dismiss();
   }
 
   @Override

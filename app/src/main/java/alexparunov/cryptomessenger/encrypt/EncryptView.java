@@ -2,6 +2,8 @@ package alexparunov.cryptomessenger.encrypt;
 
 import android.graphics.Bitmap;
 
+import java.io.File;
+
 public interface EncryptView {
 
   String getSecretMessage();
@@ -14,9 +16,9 @@ public interface EncryptView {
 
   void setSecretMessage(String secretMessage);
 
-  void setCoverImage(String filePath);
+  void setCoverImage(File file);
 
-  void setSecretImage(String filePath);
+  void setSecretImage(File file);
 
   void showToast(int message);
 
