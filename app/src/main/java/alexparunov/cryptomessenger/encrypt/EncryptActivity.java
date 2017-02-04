@@ -189,7 +189,7 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
   public void openCamera() {
     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
     File file = new File(android.os.Environment
-      .getExternalStorageDirectory(), "temp.jpg");
+      .getExternalStorageDirectory(), "temp.png");
 
     Uri imageUri = FileProvider.getUriForFile(this, "alexparunov", file);
 

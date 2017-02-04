@@ -19,6 +19,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
   private EncryptInteractor mInteractor;
   private static final int IMAGE_SIZE = 600;
   private int whichImage = -1;
+  private Bitmap coverImage, secretImage;
 
   EncryptPresenterImpl(EncryptView encryptView) {
     this.mView = encryptView;
@@ -42,14 +43,14 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     File folder = new File(path);
     if (!folder.exists()) {
       if (folder.mkdirs()) {
-        File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
+        File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".png");
         this.whichImage = whichImage;
         compressFile(file, scaledBitmap);
       } else {
         showParsingImageError();
       }
     } else {
-      File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
+      File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".png");
       this.whichImage = whichImage;
       compressFile(file, scaledBitmap);
     }
@@ -61,7 +62,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
 
     File file = new File(Environment.getExternalStorageDirectory().toString());
     for (File temp : file.listFiles()) {
-      if (temp.getName().equals("temp.jpg")) {
+      if (temp.getName().equals("temp.png")) {
         file = temp;
         break;
       }
@@ -81,14 +82,14 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
 
     if (!folder.exists()) {
       if (folder.mkdirs()) {
-        file = new File(path, String.valueOf(System.currentTimeMillis() + ".jped"));
+        file = new File(path, String.valueOf(System.currentTimeMillis() + ".png"));
         this.whichImage = whichImage;
         compressFile(file, scaledBitmap);
       } else {
         showParsingImageError();
       }
     } else {
-      file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
+      file = new File(path, String.valueOf(System.currentTimeMillis()) + ".png");
       this.whichImage = whichImage;
       compressFile(file, scaledBitmap);
     }
@@ -98,13 +99,15 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     try {
       OutputStream outputStream;
       outputStream = new FileOutputStream(file);
-      bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outputStream);
+      bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
       outputStream.flush();
       outputStream.close();
 
       if (whichImage == Constants.COVER_IMAGE) {
+        this.coverImage = bitmap;
         mView.setCoverImage(file);
       } else if (whichImage == Constants.SECRET_IMAGE) {
+        this.secretImage = bitmap;
         mView.setSecretImage(file);
       }
     } catch (Exception e) {
@@ -122,14 +125,26 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
   public void encryptText() {
     mView.showProgressDialog();
 
-    mInteractor.performSteganography(mView.getSecretMessage(),mView.getCoverImage(),null);
+    if (coverImage == null) {
+      coverImage = mView.getCoverImage();
+    }
+
+    mInteractor.performSteganography(mView.getSecretMessage(), coverImage, null);
   }
 
   @Override
   public void encryptImage() {
     mView.showProgressDialog();
 
-    mInteractor.performSteganography(null, mView.getCoverImage(), mView.getSecretImage());
+    if (coverImage == null) {
+      coverImage = mView.getCoverImage();
+    }
+
+    if (secretImage == null) {
+      secretImage = mView.getSecretImage();
+    }
+
+    mInteractor.performSteganography(null, coverImage, secretImage);
   }
 
   @Override
