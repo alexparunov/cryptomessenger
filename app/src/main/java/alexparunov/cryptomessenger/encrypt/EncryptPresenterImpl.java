@@ -1,5 +1,6 @@
 package alexparunov.cryptomessenger.encrypt;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
@@ -12,14 +13,16 @@ import java.io.OutputStream;
 import alexparunov.cryptomessenger.R;
 import alexparunov.cryptomessenger.utils.Constants;
 
-class EncryptPresenterImpl implements EncryptPresenter {
+class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.EncryptInteractorListener {
 
   private EncryptView mView;
+  private EncryptInteractor mInteractor;
   private static final int IMAGE_SIZE = 600;
   private int whichImage = -1;
 
   EncryptPresenterImpl(EncryptView encryptView) {
     this.mView = encryptView;
+    mInteractor = new EncryptInteractorImpl((Activity) encryptView, this);
   }
 
   @Override
@@ -118,10 +121,26 @@ class EncryptPresenterImpl implements EncryptPresenter {
   @Override
   public void encryptText() {
     mView.showProgressDialog();
+
+    mInteractor.performSteganography(mView.getSecretMessage(),mView.getCoverImage(),null);
   }
 
   @Override
   public void encryptImage() {
     mView.showProgressDialog();
+
+    mInteractor.performSteganography(null, mView.getCoverImage(), mView.getSecretImage());
+  }
+
+  @Override
+  public void onPerformSteganographySuccessful() {
+
+    mView.stopProgressDialog();
+  }
+
+  @Override
+  public void onPerformSteganographyFailure() {
+
+    mView.stopProgressDialog();
   }
 }
