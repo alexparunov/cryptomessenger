@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
   @OnClick(R.id.bAMDecrypt)
   public void onClickDecrypt() {
-    //Start DecryptActivity
+    //(TODO) Start DecryptActivity
   }
 
   @Override

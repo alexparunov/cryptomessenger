@@ -23,7 +23,7 @@ class EncryptPresenterImpl implements EncryptPresenter {
   }
 
   @Override
-  public void selectCoverImage(String tempPath) {
+  public void selectImage(int whichImage, String tempPath) {
     mView.showProgressDialog();
 
     Bitmap bitmap;
@@ -40,20 +40,20 @@ class EncryptPresenterImpl implements EncryptPresenter {
     if (!folder.exists()) {
       if (folder.mkdirs()) {
         File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
-        whichImage = Constants.COVER_IMAGE;
+        this.whichImage = whichImage;
         compressFile(file, scaledBitmap);
       } else {
         showParsingImageError();
       }
     } else {
       File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
-      whichImage = Constants.COVER_IMAGE;
+      this.whichImage = whichImage;
       compressFile(file, scaledBitmap);
     }
   }
 
   @Override
-  public void selectCoverImageCamera() {
+  public void selectImageCamera(int whichImage) {
     mView.showProgressDialog();
 
     File file = new File(Environment.getExternalStorageDirectory().toString());
@@ -79,83 +79,14 @@ class EncryptPresenterImpl implements EncryptPresenter {
     if (!folder.exists()) {
       if (folder.mkdirs()) {
         file = new File(path, String.valueOf(System.currentTimeMillis() + ".jped"));
-        whichImage = Constants.COVER_IMAGE;
+        this.whichImage = whichImage;
         compressFile(file, scaledBitmap);
       } else {
         showParsingImageError();
       }
     } else {
       file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
-      whichImage = Constants.COVER_IMAGE;
-      compressFile(file, scaledBitmap);
-    }
-  }
-
-  @Override
-  public void selectSecretImage(String tempPath) {
-    mView.showProgressDialog();
-
-    Bitmap bitmap;
-    BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-    bitmap = BitmapFactory.decodeFile(tempPath, bitmapOptions);
-
-    int dimension = Math.min(bitmap.getWidth(), bitmap.getHeight());
-    bitmap = ThumbnailUtils.extractThumbnail(bitmap, dimension, dimension);
-    Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, IMAGE_SIZE, IMAGE_SIZE, false);
-
-    String path = Environment.getExternalStorageDirectory() + File.separator + "CryptoMessenger" + File.separator + "CoverImage";
-
-    File folder = new File(path);
-    if (!folder.exists()) {
-      if (folder.mkdirs()) {
-        File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
-        whichImage = Constants.SECRET_IMAGE;
-        compressFile(file, scaledBitmap);
-      } else {
-        showParsingImageError();
-      }
-    } else {
-      File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
-      whichImage = Constants.SECRET_IMAGE;
-      compressFile(file, scaledBitmap);
-    }
-  }
-
-  @Override
-  public void selectSecretImageCamera() {
-    mView.showProgressDialog();
-
-    File file = new File(Environment.getExternalStorageDirectory().toString());
-    for (File temp : file.listFiles()) {
-      if (temp.getName().equals("temp.jpg")) {
-        file = temp;
-        break;
-      }
-    }
-
-    Bitmap bitmap;
-    BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-    bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), bitmapOptions);
-    file.delete();
-
-    int dimension = Math.min(bitmap.getWidth(), bitmap.getHeight());
-    bitmap = ThumbnailUtils.extractThumbnail(bitmap, dimension, dimension);
-    Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, IMAGE_SIZE, IMAGE_SIZE, false);
-
-    String path = Environment.getExternalStorageDirectory() + File.separator + "CryptoMessenger" + File.separator + "CoverImage";
-    File folder = new File(path);
-
-    if (!folder.exists()) {
-      if (folder.mkdirs()) {
-        file = new File(path, String.valueOf(System.currentTimeMillis() + ".jpg"));
-        whichImage = Constants.SECRET_IMAGE;
-        compressFile(file, scaledBitmap);
-      } else {
-        showParsingImageError();
-      }
-    } else {
-      file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
-      whichImage = Constants.SECRET_IMAGE;
+      this.whichImage = whichImage;
       compressFile(file, scaledBitmap);
     }
   }

@@ -214,22 +214,15 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
 
     if (resultCode == RESULT_OK) {
       if (requestCode == Constants.REQUEST_CAMERA) {
-        if (whichImage == Constants.COVER_IMAGE) {
-          mPresenter.selectCoverImageCamera();
-        } else if (whichImage == Constants.SECRET_IMAGE) {
-          mPresenter.selectSecretImageCamera();
-        }
+        mPresenter.selectImageCamera(whichImage);
       } else if (requestCode == Constants.SELECT_FILE) {
         Uri selectedImageUri = data.getData();
         String tempPath = getPath(selectedImageUri, EncryptActivity.this);
-        if (whichImage == Constants.COVER_IMAGE) {
-          mPresenter.selectCoverImage(tempPath);
-        } else if (whichImage == Constants.SECRET_IMAGE) {
-          mPresenter.selectSecretImage(tempPath);
-        }
+        mPresenter.selectImage(whichImage, tempPath);
       }
     }
   }
+
 
   public String getPath(Uri uri, Activity activity) {
     String[] projection = {MediaStore.MediaColumns.DATA};
