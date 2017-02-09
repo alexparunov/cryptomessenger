@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,9 +31,9 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
   public void selectImage(int whichImage, String tempPath) {
     mView.showProgressDialog();
 
-    Bitmap bitmap;
     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-    bitmap = BitmapFactory.decodeFile(tempPath, bitmapOptions);
+    bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
+    Bitmap bitmap = BitmapFactory.decodeFile(tempPath, bitmapOptions);
 
     int dimension = Math.min(bitmap.getWidth(), bitmap.getHeight());
     bitmap = ThumbnailUtils.extractThumbnail(bitmap, dimension, dimension);
@@ -68,9 +69,9 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
       }
     }
 
-    Bitmap bitmap;
     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-    bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), bitmapOptions);
+    bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
+    Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), bitmapOptions);
     file.delete();
 
     int dimension = Math.min(bitmap.getWidth(), bitmap.getHeight());
@@ -97,8 +98,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
 
   private void compressFile(File file, Bitmap bitmap) {
     try {
-      OutputStream outputStream;
-      outputStream = new FileOutputStream(file);
+      OutputStream outputStream = new FileOutputStream(file);
       bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
       outputStream.flush();
       outputStream.close();
@@ -126,7 +126,9 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     mView.showProgressDialog();
 
     if (coverImage == null) {
-      coverImage = mView.getCoverImage();
+      mView.stopProgressDialog();
+      mView.showToast(R.string.cover_image_empty);
+      return;
     }
 
     mInteractor.performSteganography(mView.getSecretMessage(), coverImage, null);
@@ -138,10 +140,16 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
 
     if (coverImage == null) {
       coverImage = mView.getCoverImage();
+      mView.stopProgressDialog();
+      mView.showToast(R.string.cover_image_empty);
+      return;
     }
 
     if (secretImage == null) {
       secretImage = mView.getSecretImage();
+      mView.stopProgressDialog();
+      mView.showToast(R.string.secret_image_empty);
+      return;
     }
 
     mInteractor.performSteganography(null, coverImage, secretImage);

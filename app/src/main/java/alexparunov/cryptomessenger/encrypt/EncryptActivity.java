@@ -138,7 +138,7 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
   private ProgressDialog progressDialog;
   private EncryptPresenter mPresenter;
   private int whichImage = -1;
-  private int secretMessageType = -1;
+  private int secretMessageType = Constants.TYPE_TEXT;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -243,7 +243,7 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
       .load(file)
       .placeholder(R.mipmap.ic_launcher)
       .into(ivCoverImage);
-    progressDialog.dismiss();
+    stopProgressDialog();
   }
 
   @Override
@@ -257,7 +257,7 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
       .load(file)
       .placeholder(R.mipmap.ic_launcher)
       .into(ivSecretImage);
-    progressDialog.dismiss();
+    stopProgressDialog();
   }
 
   @Override

@@ -18,4 +18,6 @@
   <string name="encrypted_success">Message is successfully encrypted</string>
   <string name="encrypted_fail">Failure during message encryption</string>
   <string name="compress_error">Failure during image compression</string>
+  <string name="cover_image_empty">Please, select cover image</string>
+  <string name="secret_image_empty">Please, select secret image</string>
 </resources>
