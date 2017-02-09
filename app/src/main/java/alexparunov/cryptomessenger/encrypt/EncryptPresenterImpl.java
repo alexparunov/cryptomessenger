@@ -13,12 +13,13 @@ import java.io.OutputStream;
 
 import alexparunov.cryptomessenger.R;
 import alexparunov.cryptomessenger.utils.Constants;
+import alexparunov.cryptomessenger.utils.StandardMethods;
 
 class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.EncryptInteractorListener {
 
   private EncryptView mView;
   private EncryptInteractor mInteractor;
-  private static int IMAGE_SIZE = 600;
+  private static int IMAGE_SIZE = 300;
   private int whichImage = -1;
   private Bitmap coverImage, secretImage;
 
@@ -161,14 +162,14 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
   }
 
   @Override
-  public void onPerformSteganographySuccessful() {
+  public void onPerformSteganographySuccessful(Bitmap stegoImage) {
 
     mView.stopProgressDialog();
   }
 
   @Override
   public void onPerformSteganographyFailure() {
-
     mView.stopProgressDialog();
+    mView.showToast(R.string.secret_message_long);
   }
 }
