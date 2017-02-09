@@ -1,4 +1,4 @@
-package alexparunov.cryptomessenger.encrypt;
+package alexparunov.cryptomessenger.activities.encrypt;
 
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;

@@ -33,7 +33,7 @@
     </activity>
 
     <activity
-        android:name=".encrypt.EncryptActivity"
+        android:name=".activities.encrypt.EncryptActivity"
         android:screenOrientation="portrait"
         android:parentActivityName=".MainActivity">
     </activity>

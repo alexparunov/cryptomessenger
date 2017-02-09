@@ -3,10 +3,8 @@ package alexparunov.cryptomessenger;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Button;
 
-import alexparunov.cryptomessenger.encrypt.EncryptActivity;
-import butterknife.BindView;
+import alexparunov.cryptomessenger.activities.encrypt.EncryptActivity;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 

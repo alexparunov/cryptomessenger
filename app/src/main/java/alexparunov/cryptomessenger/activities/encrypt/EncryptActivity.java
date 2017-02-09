@@ -1,4 +1,4 @@
-package alexparunov.cryptomessenger.encrypt;
+package alexparunov.cryptomessenger.activities.encrypt;
 
 import android.Manifest;
 import android.app.Activity;
