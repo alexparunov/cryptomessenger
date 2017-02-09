@@ -10,6 +10,7 @@
   <string name="b_secret_text_encrypt">Encrypt</string>
   <string name="b_secret_text_decrypt">Decrypt</string>
   <string name="b_stego_image_share">Share</string>
+  <string name="b_stego_image_save">Save</string>
   <string name="et_secret_text">Message&#8230;</string>
   <string name="take_image_dialog">Take Photo</string>
   <string name="select_image_dialog">Select Image</string>

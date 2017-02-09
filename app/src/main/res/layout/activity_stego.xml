@@ -26,23 +26,33 @@
 
     <TextView
         android:text="@string/stego_image_title"
-        android:textSize="@dimen/medium_text_dim"
+        android:textSize="@dimen/big_text_dim"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:id="@+id/textView"/>
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/stego_image_square"
+        android:layout_height="@dimen/stego_image_square"
         app:srcCompat="@mipmap/ic_launcher"
         android:contentDescription="@string/stego_image_title"
         android:id="@+id/ivStegoImage"
         android:scaleType="centerCrop"
         android:adjustViewBounds="false"/>
+
+    <Button
+        android:text="@string/b_stego_image_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/bStegoSave"/>
+
     <Button
         android:text="@string/b_stego_image_share"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/bStegoAct"/>
+        android:layout_gravity="center"
+        android:id="@+id/bStegoShare"/>
   </LinearLayout>
 
 </LinearLayout>
