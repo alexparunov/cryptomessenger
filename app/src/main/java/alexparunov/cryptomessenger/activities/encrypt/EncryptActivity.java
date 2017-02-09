@@ -32,7 +32,9 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 
 import alexparunov.cryptomessenger.R;
+import alexparunov.cryptomessenger.activities.stego.StegoActivity;
 import alexparunov.cryptomessenger.utils.Constants;
+import alexparunov.cryptomessenger.utils.HelperMethods;
 import alexparunov.cryptomessenger.utils.StandardMethods;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -230,6 +232,14 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
     int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
     cursor.moveToFirst();
     return cursor.getString(column_index);
+  }
+
+  @Override
+  public void startStegoActivity(Bitmap stegoImage) {
+    Intent intent = new Intent(EncryptActivity.this, StegoActivity.class);
+    byte[] stegoImageInBytes = HelperMethods.bitmapToByArray(stegoImage);
+    intent.putExtra(Constants.EXTRA_STEGO_IMAGE_ARRAY, stegoImageInBytes);
+    startActivity(intent);
   }
 
   @Override

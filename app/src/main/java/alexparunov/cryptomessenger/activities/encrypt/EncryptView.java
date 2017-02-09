@@ -33,4 +33,6 @@ public interface EncryptView {
 
   void chooseImage();
 
+  void startStegoActivity(Bitmap stegoImage);
+
 }

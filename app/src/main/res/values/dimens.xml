@@ -11,4 +11,7 @@
   <!--Image dimensions-->
   <dimen name="medium_image_square">150dp</dimen>
   <dimen name="large_image_square">200dp</dimen>
+
+  <!--Activity dimensions-->
+  <dimen name="activity_stego_top_padding">100dp</dimen>
 </resources>

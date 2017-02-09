@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.os.Environment;
-import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,7 +12,6 @@ import java.io.OutputStream;
 
 import alexparunov.cryptomessenger.R;
 import alexparunov.cryptomessenger.utils.Constants;
-import alexparunov.cryptomessenger.utils.StandardMethods;
 
 class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.EncryptInteractorListener {
 
@@ -79,7 +77,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     bitmap = ThumbnailUtils.extractThumbnail(bitmap, dimension, dimension);
 
     //We want to be able to hide secret image in cover image, so size should be less
-    if(whichImage == Constants.SECRET_IMAGE) {
+    if (whichImage == Constants.SECRET_IMAGE) {
       IMAGE_SIZE /= 2;
     }
     Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, IMAGE_SIZE, IMAGE_SIZE, false);
@@ -163,8 +161,9 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
 
   @Override
   public void onPerformSteganographySuccessful(Bitmap stegoImage) {
-
     mView.stopProgressDialog();
+    mView.showToast(R.string.encrypted_success);
+    mView.startStegoActivity(stegoImage);
   }
 
   @Override
