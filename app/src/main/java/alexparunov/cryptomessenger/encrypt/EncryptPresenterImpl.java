@@ -18,7 +18,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
 
   private EncryptView mView;
   private EncryptInteractor mInteractor;
-  private static final int IMAGE_SIZE = 600;
+  private static int IMAGE_SIZE = 600;
   private int whichImage = -1;
   private Bitmap coverImage, secretImage;
 
@@ -32,7 +32,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     mView.showProgressDialog();
 
     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-    bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
+    bitmapOptions.inPreferredConfig = Bitmap.Config.RGB_565;
     Bitmap bitmap = BitmapFactory.decodeFile(tempPath, bitmapOptions);
 
     int dimension = Math.min(bitmap.getWidth(), bitmap.getHeight());
@@ -70,12 +70,17 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     }
 
     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-    bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
+    bitmapOptions.inPreferredConfig = Bitmap.Config.RGB_565;
     Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), bitmapOptions);
     file.delete();
 
     int dimension = Math.min(bitmap.getWidth(), bitmap.getHeight());
     bitmap = ThumbnailUtils.extractThumbnail(bitmap, dimension, dimension);
+
+    //We want to be able to hide secret image in cover image, so size should be less
+    if(whichImage == Constants.SECRET_IMAGE) {
+      IMAGE_SIZE /= 2;
+    }
     Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, IMAGE_SIZE, IMAGE_SIZE, false);
 
     String path = Environment.getExternalStorageDirectory() + File.separator + "CryptoMessenger" + File.separator + "CoverImage";
