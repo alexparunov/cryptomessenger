@@ -237,7 +237,7 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
   @Override
   public void startStegoActivity(Bitmap stegoImage) {
     Intent intent = new Intent(EncryptActivity.this, StegoActivity.class);
-    byte[] stegoImageInBytes = HelperMethods.bitmapToByArray(stegoImage);
+    byte[] stegoImageInBytes = HelperMethods.bitmapToByteArray(stegoImage);
     intent.putExtra(Constants.EXTRA_STEGO_IMAGE_ARRAY, stegoImageInBytes);
     startActivity(intent);
   }

@@ -8,7 +8,7 @@ import java.nio.charset.Charset;
 
 public class HelperMethods {
 
-  public static byte[] bitmapToByArray(Bitmap bitmap) {
+  public static byte[] bitmapToByteArray(Bitmap bitmap) {
 
     ByteArrayOutputStream stream = new ByteArrayOutputStream();
     bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -21,18 +21,28 @@ public class HelperMethods {
     return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
   }
 
+  public static String bitmapToBinaryStream(Bitmap bitmap) {
+    byte[] bitmapInBytes = bitmapToByteArray(bitmap);
+
+    return byteArrayToBitsStream(bitmapInBytes);
+  }
+
   public static String stringToBinaryStream(String string) {
     byte[] stringInBytes = string.getBytes(Charset.forName("UTF-8"));
+
+    return byteArrayToBitsStream(stringInBytes);
+  }
+
+  private static String byteArrayToBitsStream(byte[] array) {
     StringBuilder binary = new StringBuilder();
 
-    for (byte b : stringInBytes) {
+    for (byte b : array) {
       int val = b;
       for (int i = 0; i < 8; i++) {
         binary.append((val & 128) == 0 ? 0 : 1);
         val <<= 1;
       }
     }
-
     return binary.toString();
   }
 }

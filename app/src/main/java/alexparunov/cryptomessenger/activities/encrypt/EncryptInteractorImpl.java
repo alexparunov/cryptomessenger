@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 
 import alexparunov.cryptomessenger.algorithms.Embedding;
+import alexparunov.cryptomessenger.utils.StandardMethods;
 
 public class EncryptInteractorImpl implements EncryptInteractor {
 
@@ -34,7 +35,12 @@ public class EncryptInteractorImpl implements EncryptInteractor {
   }
 
   private void encryptSecretImage(Bitmap coverImage, Bitmap secretImage) {
-    Embedding.embedSecretImage(coverImage, secretImage);
+    Bitmap stegoImage = Embedding.embedSecretImage(coverImage, secretImage);
+    if(stegoImage != null) {
+      listener.onPerformSteganographySuccessful(stegoImage);
+    } else {
+      listener.onPerformSteganographyFailure();
+    }
   }
 
   interface EncryptInteractorListener {

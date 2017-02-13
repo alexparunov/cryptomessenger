@@ -12,12 +12,13 @@ import java.io.OutputStream;
 
 import alexparunov.cryptomessenger.R;
 import alexparunov.cryptomessenger.utils.Constants;
+import alexparunov.cryptomessenger.utils.StandardMethods;
 
 class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.EncryptInteractorListener {
 
   private EncryptView mView;
   private EncryptInteractor mInteractor;
-  private static int IMAGE_SIZE = 300;
+  private static int IMAGE_SIZE = 600;
   private int whichImage = -1;
   private Bitmap coverImage, secretImage;
 
@@ -36,9 +37,14 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
 
     int dimension = Math.min(bitmap.getWidth(), bitmap.getHeight());
     bitmap = ThumbnailUtils.extractThumbnail(bitmap, dimension, dimension);
+
+    if (whichImage == Constants.SECRET_IMAGE) {
+      IMAGE_SIZE /= 3;
+    }
+
     Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, IMAGE_SIZE, IMAGE_SIZE, false);
 
-    String path = Environment.getExternalStorageDirectory() + File.separator + "CryptoMessenger" + File.separator + "CoverImage";
+    String path = Environment.getExternalStorageDirectory() + File.separator + "CryptoMessenger";
 
     File folder = new File(path);
     if (!folder.exists()) {
@@ -78,11 +84,12 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
 
     //We want to be able to hide secret image in cover image, so size should be less
     if (whichImage == Constants.SECRET_IMAGE) {
-      IMAGE_SIZE /= 2;
+      IMAGE_SIZE /= 3;
     }
+
     Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, IMAGE_SIZE, IMAGE_SIZE, false);
 
-    String path = Environment.getExternalStorageDirectory() + File.separator + "CryptoMessenger" + File.separator + "CoverImage";
+    String path = Environment.getExternalStorageDirectory() + File.separator + "CryptoMessenger";
     File folder = new File(path);
 
     if (!folder.exists()) {
@@ -127,21 +134,18 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
 
   @Override
   public void encryptText() {
-    mView.showProgressDialog();
-
     if (coverImage == null) {
       mView.stopProgressDialog();
       mView.showToast(R.string.cover_image_empty);
       return;
     }
 
+    mView.showProgressDialog();
     mInteractor.performSteganography(mView.getSecretMessage(), coverImage, null);
   }
 
   @Override
   public void encryptImage() {
-    mView.showProgressDialog();
-
     if (coverImage == null) {
       coverImage = mView.getCoverImage();
       mView.stopProgressDialog();
@@ -156,6 +160,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
       return;
     }
 
+    mView.showProgressDialog();
     mInteractor.performSteganography(null, coverImage, secretImage);
   }
 
