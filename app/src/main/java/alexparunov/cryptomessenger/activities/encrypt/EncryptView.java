@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 
 import java.io.File;
 
-public interface EncryptView {
+interface EncryptView {
 
   String getSecretMessage();
 

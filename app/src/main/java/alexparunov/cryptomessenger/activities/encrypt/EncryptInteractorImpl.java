@@ -1,45 +1,62 @@
 package alexparunov.cryptomessenger.activities.encrypt;
 
-import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 
 import alexparunov.cryptomessenger.algorithms.Embedding;
-import alexparunov.cryptomessenger.utils.StandardMethods;
 
-public class EncryptInteractorImpl implements EncryptInteractor {
+class EncryptInteractorImpl implements EncryptInteractor {
 
-  private Context context;
   private EncryptInteractorListener listener;
 
-  EncryptInteractorImpl(Context context, EncryptInteractorListener listener) {
-    this.context = context;
+  EncryptInteractorImpl(EncryptInteractorListener listener) {
     this.listener = listener;
   }
 
   @Override
   public void performSteganography(String message, Bitmap coverImage, Bitmap secretImage) {
     if (secretImage == null) {
-      encryptSecretMessage(message, coverImage);
+      new EmbedSecretMessage(message, coverImage, null).execute();
     } else {
-      encryptSecretImage(coverImage, secretImage);
+      new EmbedSecretMessage(null, coverImage, secretImage).execute();
     }
   }
 
-  private void encryptSecretMessage(String message, Bitmap coverImage) {
-    Bitmap stegoImage = Embedding.embedSecretText(message, coverImage);
-    if (stegoImage != null) {
-      listener.onPerformSteganographySuccessful(stegoImage);
-    } else {
-      listener.onPerformSteganographyFailure();
-    }
-  }
+  private class EmbedSecretMessage extends AsyncTask<Void, Void, Bitmap> {
+    String message;
+    Bitmap coverImage, secretImage;
 
-  private void encryptSecretImage(Bitmap coverImage, Bitmap secretImage) {
-    Bitmap stegoImage = Embedding.embedSecretImage(coverImage, secretImage);
-    if(stegoImage != null) {
-      listener.onPerformSteganographySuccessful(stegoImage);
-    } else {
-      listener.onPerformSteganographyFailure();
+    EmbedSecretMessage(String message, Bitmap coverImage, Bitmap secretImage) {
+      this.message = message;
+      this.coverImage = coverImage;
+      this.secretImage = secretImage;
+    }
+
+    @Override
+    protected void onPreExecute() {
+      super.onPreExecute();
+    }
+
+    @Override
+    protected Bitmap doInBackground(Void... voids) {
+      Bitmap stegoImage = null;
+
+      if (message != null && secretImage == null && coverImage != null) {
+        stegoImage = Embedding.embedSecretText(this.message, this.coverImage);
+      } else if (message == null && secretImage != null && coverImage != null) {
+        stegoImage = Embedding.embedSecretImage(this.coverImage, this.secretImage);
+      }
+
+      return stegoImage;
+    }
+
+    @Override
+    protected void onPostExecute(Bitmap stegoImage) {
+      if (stegoImage != null) {
+        listener.onPerformSteganographySuccessful(stegoImage);
+      } else {
+        listener.onPerformSteganographyFailure();
+      }
     }
   }
 

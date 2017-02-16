@@ -1,11 +1,9 @@
 package alexparunov.cryptomessenger.activities.encrypt;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.os.Environment;
-import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -24,7 +22,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
 
   EncryptPresenterImpl(EncryptView encryptView) {
     this.mView = encryptView;
-    mInteractor = new EncryptInteractorImpl((Activity) encryptView, this);
+    mInteractor = new EncryptInteractorImpl(this);
   }
 
   @Override
@@ -146,6 +144,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     }
 
     mView.showProgressDialog();
+    StandardMethods.showLog("EPI", "beforePerformStego");
     mInteractor.performSteganography(mView.getSecretMessage(), coverImage, null);
   }
 
@@ -166,6 +165,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     }
 
     mView.showProgressDialog();
+    StandardMethods.showLog("EPI", "beforePerformStego");
     mInteractor.performSteganography(null, coverImage, secretImage);
   }
 
