@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -18,7 +19,6 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
 
   private EncryptView mView;
   private EncryptInteractor mInteractor;
-  private static int IMAGE_SIZE = 600;
   private int whichImage = -1;
   private Bitmap coverImage, secretImage;
 
@@ -31,8 +31,11 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
   public void selectImage(int whichImage, String tempPath) {
     mView.showProgressDialog();
 
+    int IMAGE_SIZE = 600;
+
     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
     bitmapOptions.inPreferredConfig = Bitmap.Config.RGB_565;
+    bitmapOptions.inScaled = false;
     Bitmap bitmap = BitmapFactory.decodeFile(tempPath, bitmapOptions);
 
     int dimension = Math.min(bitmap.getWidth(), bitmap.getHeight());
@@ -66,6 +69,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
   public void selectImageCamera(int whichImage) {
     mView.showProgressDialog();
 
+    int IMAGE_SIZE = 600;
     File file = new File(Environment.getExternalStorageDirectory().toString());
     for (File temp : file.listFiles()) {
       if (temp.getName().equals("temp.png")) {
@@ -76,6 +80,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
 
     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
     bitmapOptions.inPreferredConfig = Bitmap.Config.RGB_565;
+    bitmapOptions.inScaled = false;
     Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), bitmapOptions);
     file.delete();
 
