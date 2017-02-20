@@ -123,6 +123,8 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
       } else if (whichImage == Constants.SECRET_IMAGE) {
         this.secretImage = bitmap;
         mView.setSecretImage(file);
+      } else {
+        showParsingImageError();
       }
     } catch (Exception e) {
       e.printStackTrace();
