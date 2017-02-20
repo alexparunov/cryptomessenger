@@ -34,7 +34,6 @@ import java.io.File;
 import alexparunov.cryptomessenger.R;
 import alexparunov.cryptomessenger.activities.stego.StegoActivity;
 import alexparunov.cryptomessenger.utils.Constants;
-import alexparunov.cryptomessenger.utils.HelperMethods;
 import alexparunov.cryptomessenger.utils.StandardMethods;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -235,10 +234,9 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
   }
 
   @Override
-  public void startStegoActivity(Bitmap stegoImage) {
+  public void startStegoActivity(String filePath) {
     Intent intent = new Intent(EncryptActivity.this, StegoActivity.class);
-    byte[] stegoImageInBytes = HelperMethods.bitmapToByteArray(stegoImage);
-    intent.putExtra(Constants.EXTRA_STEGO_IMAGE_ARRAY, stegoImageInBytes);
+    intent.putExtra(Constants.EXTRA_STEGO_IMAGE_PATH, filePath);
     startActivity(intent);
   }
 

@@ -1,12 +1,7 @@
 package alexparunov.cryptomessenger.activities.stego;
 
-import android.graphics.Bitmap;
 
-public interface StegoView {
-
-  Bitmap getStegoImage();
-
-  void setStegoImage(Bitmap stegoImage);
+interface StegoView {
 
   void showToast(int message);
 
@@ -15,4 +10,6 @@ public interface StegoView {
   void stopProgressDialog();
 
   void initToolbar();
+
+  void setStegoImage(String path);
 }

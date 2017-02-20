@@ -6,7 +6,9 @@ import android.media.ThumbnailUtils;
 import android.os.Environment;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 
 import alexparunov.cryptomessenger.R;
@@ -48,16 +50,18 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     String path = Environment.getExternalStorageDirectory() + File.separator + "CryptoMessenger";
 
     File folder = new File(path);
+
+    String photoName = getPhotoName(whichImage);
     if (!folder.exists()) {
       if (folder.mkdirs()) {
-        File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".png");
+        File file = new File(path, photoName);
         this.whichImage = whichImage;
         compressFile(file, scaledBitmap);
       } else {
         showParsingImageError();
       }
     } else {
-      File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".png");
+      File file = new File(path, photoName);
       this.whichImage = whichImage;
       compressFile(file, scaledBitmap);
     }
@@ -95,19 +99,27 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     String path = Environment.getExternalStorageDirectory() + File.separator + "CryptoMessenger";
     File folder = new File(path);
 
+    String photoName = getPhotoName(whichImage);
     if (!folder.exists()) {
       if (folder.mkdirs()) {
-        file = new File(path, String.valueOf(System.currentTimeMillis() + ".png"));
+        file = new File(path, photoName);
         this.whichImage = whichImage;
         compressFile(file, scaledBitmap);
       } else {
         showParsingImageError();
       }
     } else {
-      file = new File(path, String.valueOf(System.currentTimeMillis()) + ".png");
+      file = new File(path, photoName);
       this.whichImage = whichImage;
       compressFile(file, scaledBitmap);
     }
+  }
+
+  private String getPhotoName(int whichImage) {
+    return whichImage == Constants.COVER_IMAGE ?
+      System.currentTimeMillis() % 10000 + "_cover_image.png" :
+      System.currentTimeMillis() % 10000 + "_secret_image.png";
+
   }
 
   private void compressFile(File file, Bitmap bitmap) {
@@ -175,12 +187,50 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
   public void onPerformSteganographySuccessful(Bitmap stegoImage) {
     mView.stopProgressDialog();
     mView.showToast(R.string.encrypted_success);
-    mView.startStegoActivity(stegoImage);
+    String filePath = storeStegoImage(stegoImage);
+    mView.startStegoActivity(filePath);
   }
 
   @Override
   public void onPerformSteganographyFailure() {
     mView.stopProgressDialog();
     mView.showToast(R.string.secret_message_long);
+  }
+
+  private String storeStegoImage(Bitmap stegoImage) {
+    String path = Environment.getExternalStorageDirectory() + File.separator + "CryptoMessenger";
+
+    File folder = new File(path);
+    File file = null;
+    String filePath = "";
+
+    if (!folder.exists()) {
+      if (folder.mkdirs()) {
+        file = new File(path, System.currentTimeMillis() % 10000 + "stego_temp.png");
+      } else {
+        showParsingImageError();
+      }
+    } else {
+      file = new File(path, System.currentTimeMillis() % 10000 + "stego_temp.png");
+    }
+
+    if (file != null) {
+      try {
+        FileOutputStream fos = new FileOutputStream(file);
+        stegoImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+
+        fos.flush();
+        fos.close();
+
+        filePath = file.getAbsolutePath();
+
+      } catch (FileNotFoundException e1) {
+        StandardMethods.showLog("EPI/Error", e1.getMessage());
+      } catch (IOException e2) {
+        StandardMethods.showLog("EPI/Error", e2.getMessage());
+      }
+    }
+
+    return filePath;
   }
 }

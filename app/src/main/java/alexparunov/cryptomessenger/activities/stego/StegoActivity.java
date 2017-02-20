@@ -2,7 +2,6 @@ package alexparunov.cryptomessenger.activities.stego;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,9 +9,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
+
 import alexparunov.cryptomessenger.R;
 import alexparunov.cryptomessenger.utils.Constants;
-import alexparunov.cryptomessenger.utils.HelperMethods;
 import alexparunov.cryptomessenger.utils.StandardMethods;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,7 +33,8 @@ public class StegoActivity extends AppCompatActivity implements StegoView {
 
 
   private ProgressDialog progressDialog;
-  private Bitmap stegoImage;
+
+  private String stegoImagePath = "";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -40,15 +43,17 @@ public class StegoActivity extends AppCompatActivity implements StegoView {
 
     ButterKnife.bind(this);
 
+    initToolbar();
+
     Intent intent = getIntent();
+
     if (intent != null) {
-      byte[] byteArrayExtra = intent.getByteArrayExtra(Constants.EXTRA_STEGO_IMAGE_ARRAY);
-      stegoImage = HelperMethods.byteArrayToBitmap(byteArrayExtra);
-      setStegoImage(stegoImage);
-      ivStegoImage.setImageBitmap(stegoImage);
+      Bundle bundle = intent.getExtras();
+      stegoImagePath = bundle.getString(Constants.EXTRA_STEGO_IMAGE_PATH);
     }
 
-    initToolbar();
+    setStegoImage(stegoImagePath);
+
     progressDialog = new ProgressDialog(StegoActivity.this);
     progressDialog.setMessage("Please wait...");
   }
@@ -65,13 +70,14 @@ public class StegoActivity extends AppCompatActivity implements StegoView {
   }
 
   @Override
-  public Bitmap getStegoImage() {
-    return stegoImage;
-  }
-
-  @Override
-  public void setStegoImage(Bitmap stegoImage) {
-    this.stegoImage = stegoImage;
+  public void setStegoImage(String path) {
+    showProgressDialog();
+    Picasso.with(this)
+      .load(new File(path))
+      .fit()
+      .placeholder(R.mipmap.ic_launcher)
+      .into(ivStegoImage);
+    stopProgressDialog();
   }
 
   @Override

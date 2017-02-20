@@ -23,5 +23,5 @@ public class Constants {
   public static final int TYPE_IMAGE = 1;
 
   //Bundle arguments
-  public static final String EXTRA_STEGO_IMAGE_ARRAY = "bundle_stego_image_byte_array";
+  public static final String EXTRA_STEGO_IMAGE_PATH = "stego_image_path";
 }
