@@ -15,10 +15,12 @@ class EncryptInteractorImpl implements EncryptInteractor {
 
   @Override
   public void performSteganography(String message, Bitmap coverImage, Bitmap secretImage) {
-    if (secretImage == null) {
+    if (secretImage == null && message != null) {
       new EmbedSecretMessage(message, coverImage, null).execute();
-    } else {
+    } else if(secretImage != null){
       new EmbedSecretMessage(null, coverImage, secretImage).execute();
+    } else {
+      listener.onPerformSteganographyFailure();
     }
   }
 

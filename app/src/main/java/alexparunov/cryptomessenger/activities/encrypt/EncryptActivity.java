@@ -247,6 +247,7 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
 
   @Override
   public void setCoverImage(File file) {
+    showProgressDialog();
     Picasso.with(this)
       .load(file)
       .fit()
@@ -262,6 +263,7 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
 
   @Override
   public void setSecretImage(File file) {
+    showProgressDialog();
     Picasso.with(this)
       .load(file)
       .fit()
@@ -287,14 +289,14 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
 
   @Override
   public void showProgressDialog() {
-    if (progressDialog != null) {
+    if (progressDialog != null && !progressDialog.isShowing()) {
       progressDialog.show();
     }
   }
 
   @Override
   public void stopProgressDialog() {
-    if (progressDialog != null) {
+    if (progressDialog != null && progressDialog.isShowing()) {
       progressDialog.dismiss();
     }
   }

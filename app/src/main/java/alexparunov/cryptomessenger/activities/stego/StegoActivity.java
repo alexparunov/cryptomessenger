@@ -1,5 +1,9 @@
 package alexparunov.cryptomessenger.activities.stego;
 
+/**
+ * Created by Alexander Parunov on 2/21/17.
+ */
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,13 +32,26 @@ public class StegoActivity extends AppCompatActivity implements StegoView {
 
   @OnClick({R.id.bStegoSave, R.id.bStegoShare})
   public void onClick(View view) {
-    //(TODO) Implement onClick
+    switch (view.getId()) {
+      case R.id.bStegoSave:
+        if(!isSaved) {
+          isSaved = mPresenter.saveStegoImage(stegoImagePath);
+        } else {
+          showToast(R.string.image_is_saved);
+        }
+        break;
+      case R.id.bStegoShare:
+        mPresenter.shareStegoImage(stegoImagePath);
+        break;
+    }
   }
 
 
   private ProgressDialog progressDialog;
+  private StegoPresenter mPresenter;
 
   private String stegoImagePath = "";
+  private boolean isSaved = false;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +70,8 @@ public class StegoActivity extends AppCompatActivity implements StegoView {
     }
 
     setStegoImage(stegoImagePath);
+
+    mPresenter = new StegoPresenterImpl(this);
 
     progressDialog = new ProgressDialog(StegoActivity.this);
     progressDialog.setMessage("Please wait...");
