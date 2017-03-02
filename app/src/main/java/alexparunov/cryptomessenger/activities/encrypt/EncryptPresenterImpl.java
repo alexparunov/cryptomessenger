@@ -31,7 +31,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
   public void selectImage(int whichImage, String tempPath) {
     mView.showProgressDialog();
 
-    int IMAGE_SIZE = 600;
+    int IMAGE_SIZE = 1000;
 
     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
     bitmapOptions.inPreferredConfig = Bitmap.Config.RGB_565;
@@ -41,8 +41,10 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     int dimension = Math.min(bitmap.getWidth(), bitmap.getHeight());
     bitmap = ThumbnailUtils.extractThumbnail(bitmap, dimension, dimension);
 
+    //We want to be able to hide secret image in cover image, so size should be less
+    //200x200 image
     if (whichImage == Constants.SECRET_IMAGE) {
-      IMAGE_SIZE /= 3;
+      IMAGE_SIZE  = IMAGE_SIZE/3 - 133;
     }
 
     Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, IMAGE_SIZE, IMAGE_SIZE, false);
@@ -71,7 +73,8 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
   public void selectImageCamera(int whichImage) {
     mView.showProgressDialog();
 
-    int IMAGE_SIZE = 600;
+    int IMAGE_SIZE = 1000;
+
     File file = new File(Environment.getExternalStorageDirectory().toString());
     for (File temp : file.listFiles()) {
       if (temp.getName().equals("temp.png")) {
@@ -90,8 +93,9 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     bitmap = ThumbnailUtils.extractThumbnail(bitmap, dimension, dimension);
 
     //We want to be able to hide secret image in cover image, so size should be less
+    //200x200 image
     if (whichImage == Constants.SECRET_IMAGE) {
-      IMAGE_SIZE /= 3;
+      IMAGE_SIZE  = IMAGE_SIZE/3 - 133;
     }
 
     Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, IMAGE_SIZE, IMAGE_SIZE, false);
