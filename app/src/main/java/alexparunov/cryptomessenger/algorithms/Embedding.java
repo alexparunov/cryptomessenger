@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.util.Random;
 
@@ -70,6 +71,7 @@ public class Embedding {
     int secretMessageLen = sTextInBin.length();
     int action;
     int embMesPos = 0;
+    int keyPos = 0;
 
     int width = coverImage.getWidth();
     int height = coverImage.getHeight();
@@ -79,29 +81,30 @@ public class Embedding {
       return null;
     }
 
-    //Generate and place random 13 bit array of 0-1 for (0,0) pixel
+    //Generate and place random 13 bit array of 0-1 in (0,0) pixel
     int key[] = generateKey();
-
+    
     //Put [0,3] pixels into red
-    int red_sum = 0;
+    int red_sum = -1;
     for(int i=0;i<=3;i++) {
-      red_sum += (int) Math.pow(key[i],3-i);
+      red_sum += (int) Math.pow(key[i]*2,3-i);
     }
 
     //Put [4,8] pixels into green
-    int green_sum = 0;
+    int green_sum = -1;
     for(int i=4;i<=8;i++) {
-      green_sum += (int) Math.pow(key[i],8-i);
+      green_sum += (int) Math.pow(key[i]*2,8-i);
     }
 
     //Put[9,12] pixels into blue
-    int blue_sum = 0;
+    int blue_sum = -1;
     for(int i=9;i<=12;i++) {
-      blue_sum += (int) Math.pow(key[i],12-i);
+      blue_sum += (int) Math.pow(key[i]*2,12-i);
     }
 
     int keyPixel = Color.rgb(red_sum,green_sum,blue_sum);
     stegoImage.setPixel(0,0,keyPixel);
+    int endX = 0, endY = 1;
 
     outerloop:
     for (int x = 0; x < width; x++) {
@@ -117,24 +120,35 @@ public class Embedding {
             }
 
             //Action for LSB
-            action = action(colors[c], sTextInBin.charAt(embMesPos));
-            colors[c] += action;
-            embMesPos++;
+            if((key[keyPos] ^ LSB2(colors[c])) == 1) {
+              action = action(colors[c], sTextInBin.charAt(embMesPos));
+              colors[c] += action;
+              embMesPos++;
+              keyPos = (keyPos + 1) % 13;
+            }
           }
 
           int newPixel = Color.rgb(colors[0], colors[1], colors[2]);
           stegoImage.setPixel(x, y, newPixel);
         } else {
+          endX = x + 1;
+          endY = y + 1;
           break outerloop;
         }
       }
     }
 
+    //End of secret message flag
+    stegoImage.setPixel(endX, endY, Color.rgb(0,0,0));
     return stegoImage;
   }
 
   private static int LSB(int number) {
     return number & 1;
+  }
+
+  private static int LSB2(int number) {
+    return (number >> 1) & 1;
   }
 
   private static int action(int color, char bit) {
