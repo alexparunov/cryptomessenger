@@ -8,7 +8,7 @@ import java.nio.charset.Charset;
 
 public class HelperMethods {
 
-  public static byte[] bitmapToByteArray(Bitmap bitmap) {
+  static byte[] bitmapToByteArray(Bitmap bitmap) {
 
     ByteArrayOutputStream stream = new ByteArrayOutputStream();
     bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);

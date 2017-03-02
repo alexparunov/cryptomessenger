@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
 
+import java.util.Random;
+
 import alexparunov.cryptomessenger.utils.HelperMethods;
 import alexparunov.cryptomessenger.utils.StandardMethods;
 
@@ -17,14 +19,14 @@ public class Embedding {
     String sImageInBin = HelperMethods.bitmapToBinaryStream(secretImage);
 
     int secretImageLen = sImageInBin.length();
-    int action1, action2;
+    int action;
     int embImPos = 0;
 
     int width = coverImage.getWidth();
     int height = coverImage.getHeight();
 
-    //If secret image is too long (6 bits in each pixel)
-    if (secretImageLen > width * height * 6) {
+    //If secret image is too long (3 bits in each pixel)
+    if (secretImageLen > width * height * 3) {
       return null;
     }
 
@@ -41,20 +43,11 @@ public class Embedding {
               break;
             }
 
-            //Action for LSB1
-            action1 = action1(colors[c], sImageInBin.charAt(embImPos));
-            colors[c] += action1;
+            //Action for LSB
+            action = action(colors[c], sImageInBin.charAt(embImPos));
+            colors[c] += action;
+
             embImPos++;
-
-            if (embImPos == secretImageLen) {
-              break;
-            }
-
-            //Action for LSB2
-            action2 = action2(colors[c], sImageInBin.charAt(embImPos));
-            colors[c] += action2;
-            embImPos++;
-
           }
 
           int newPixel = Color.rgb(colors[0], colors[1], colors[2]);
@@ -75,20 +68,44 @@ public class Embedding {
     String sTextInBin = HelperMethods.stringToBinaryStream(secretText);
 
     int secretMessageLen = sTextInBin.length();
-    int action1, action2;
+    int action;
     int embMesPos = 0;
 
     int width = coverImage.getWidth();
     int height = coverImage.getHeight();
 
-    //If secret message is too long (6 bits in each pixel)
-    if (secretMessageLen > width * height * 6) {
+    //If secret message is too long (3 bits in each pixel)
+    if (secretMessageLen > width * height * 3) {
       return null;
     }
 
+    //Generate and place random 13 bit array of 0-1 for (0,0) pixel
+    int key[] = generateKey();
+
+    //Put [0,3] pixels into red
+    int red_sum = 0;
+    for(int i=0;i<=3;i++) {
+      red_sum += (int) Math.pow(key[i],3-i);
+    }
+
+    //Put [4,8] pixels into green
+    int green_sum = 0;
+    for(int i=4;i<=8;i++) {
+      green_sum += (int) Math.pow(key[i],8-i);
+    }
+
+    //Put[9,12] pixels into blue
+    int blue_sum = 0;
+    for(int i=9;i<=12;i++) {
+      blue_sum += (int) Math.pow(key[i],12-i);
+    }
+
+    int keyPixel = Color.rgb(red_sum,green_sum,blue_sum);
+    stegoImage.setPixel(0,0,keyPixel);
+
     outerloop:
     for (int x = 0; x < width; x++) {
-      for (int y = 0; y < height; y++) {
+      for (int y = 1; y < height; y++) {
         int pixel = coverImage.getPixel(x, y);
 
         if (embMesPos < secretMessageLen) {
@@ -99,20 +116,10 @@ public class Embedding {
               break;
             }
 
-            //Action for LSB1
-            action1 = action1(colors[c], sTextInBin.charAt(embMesPos));
-            colors[c] += action1;
+            //Action for LSB
+            action = action(colors[c], sTextInBin.charAt(embMesPos));
+            colors[c] += action;
             embMesPos++;
-
-            if (embMesPos == secretMessageLen) {
-              break;
-            }
-
-            //Action for LSB2
-            action2 = action2(colors[c], sTextInBin.charAt(embMesPos));
-            colors[c] += action2;
-            embMesPos++;
-
           }
 
           int newPixel = Color.rgb(colors[0], colors[1], colors[2]);
@@ -126,32 +133,32 @@ public class Embedding {
     return stegoImage;
   }
 
-  private static int LSB1(int number) {
+  private static int LSB(int number) {
     return number & 1;
   }
 
-  private static int action1(int color, char bit) {
-    if (LSB1(color) == 1 && bit == '0') {
+  private static int action(int color, char bit) {
+    if (LSB(color) == 1 && bit == '0') {
       return -1;
-    } else if (LSB1(color) == 0 && bit == '1') {
+    } else if (LSB(color) == 0 && bit == '1') {
       return 1;
     } else {
       return 0;
     }
   }
 
-  private static int LSB2(int number) {
-    return (number >> 1) & 1;
-  }
+  private static int[] generateKey() {
+    final int[] bits = {0,1};
+    int[] result = new int[13];
 
-  private static int action2(int color, char bit) {
-    if (LSB2(color) == 1 && bit == '0') {
-      return -2;
-    } else if (LSB2(color) == 0 && bit == '1') {
-      return 2;
-    } else {
-      return 0;
+    int n,i;
+    Random random = new Random();
+
+    for(i=0;i<13;++i) {
+      n = random.nextInt(2);
+      result[i] = bits[n];
     }
+    return result;
   }
 
 }
