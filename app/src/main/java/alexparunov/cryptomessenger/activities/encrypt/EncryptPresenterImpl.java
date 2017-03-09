@@ -210,12 +210,12 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
 
     if (!folder.exists()) {
       if (folder.mkdirs()) {
-        file = new File(path, System.currentTimeMillis() % 10000 + "stego_temp.png");
+        file = new File(path,"SI_"+System.currentTimeMillis() + ".png");
       } else {
         showParsingImageError();
       }
     } else {
-      file = new File(path, System.currentTimeMillis() % 10000 + "stego_temp.png");
+      file = new File(path,"SI_"+System.currentTimeMillis() + ".png");
     }
 
     if (file != null) {
