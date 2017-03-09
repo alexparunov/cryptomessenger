@@ -79,8 +79,18 @@ public class Embedding {
           int newPixel = Color.rgb(colors[0], colors[1], colors[2]);
           stegoImage.setPixel(x, y, newPixel);
         } else {
-          endX = x + 1;
-          endY = y + 1;
+
+          if(y < height - 1) {
+            endX = x;
+            endY = y + 1;
+          } else if(endX < width - 1) {
+            endX = x + 1;
+            endY = y;
+          } else {
+            endX = width - 1;
+            endY = height - 1;
+          }
+
           break outerloop;
         }
       }
@@ -97,7 +107,7 @@ public class Embedding {
     Bitmap stegoImage = Bitmap.createBitmap(coverImage);
 
     String sTextInBin = HelperMethods.stringToBinaryStream(secretText);
-    
+
     int secretMessageLen = sTextInBin.length();
     int action, embMesPos = 0, keyPos = 0;
 
@@ -130,13 +140,13 @@ public class Embedding {
       blue_sum += (int) Math.pow(key[i]*2,12-i);
     }
 
-    int keyPixel = Color.rgb(red_sum,green_sum,blue_sum);
-    stegoImage.setPixel(0,0,keyPixel);
-    int endX = 0, endY = 1;
+    stegoImage.setPixel(0,0, Color.rgb(red_sum,green_sum,blue_sum));
+    stegoImage.setPixel(0,1, Color.rgb(0,0,0)); //to check if secret message is text
+    int endX = 0, endY = 2;
 
     outerloop:
     for (int x = 0; x < width; x++) {
-      for (int y = 1; y < height; y++) {
+      for (int y = 2; y < height; y++) {
         int pixel = coverImage.getPixel(x, y);
 
         if (embMesPos < secretMessageLen) {
@@ -159,8 +169,18 @@ public class Embedding {
           int newPixel = Color.rgb(colors[0], colors[1], colors[2]);
           stegoImage.setPixel(x, y, newPixel);
         } else {
-          endX = x + 1;
-          endY = y + 1;
+
+          if(y < height - 1) {
+            endX = x;
+            endY = y + 1;
+          } else if(endX < width - 1) {
+            endX = x + 1;
+            endY = y;
+          } else {
+            endX = width - 1;
+            endY = height - 1;
+          }
+
           break outerloop;
         }
       }
@@ -168,7 +188,6 @@ public class Embedding {
 
     //End of secret message flag
     stegoImage.setPixel(endX, endY, Color.rgb(0,0,0));
-
     return stegoImage;
   }
 
