@@ -3,22 +3,24 @@ package alexparunov.cryptomessenger;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
+import alexparunov.cryptomessenger.activities.decrypt.DecryptActivity;
 import alexparunov.cryptomessenger.activities.encrypt.EncryptActivity;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
-  @OnClick(R.id.bAMEncrypt)
-  public void onClickEncrypt() {
-    Intent intent = new Intent(MainActivity.this, EncryptActivity.class);
-    startActivity(intent);
-  }
-
-  @OnClick(R.id.bAMDecrypt)
-  public void onClickDecrypt() {
-    //(TODO) Start DecryptActivity
+  @OnClick({R.id.bAMEncrypt, R.id.bAMDecrypt})
+  public void onButtonClick(View view) {
+    if(view.getId() == R.id.bAMEncrypt) {
+      Intent intent = new Intent(MainActivity.this, EncryptActivity.class);
+      startActivity(intent);
+    } else if(view.getId() == R.id.bAMDecrypt) {
+      Intent intent = new Intent(MainActivity.this, DecryptActivity.class);
+      startActivity(intent);
+    }
   }
 
   @Override
