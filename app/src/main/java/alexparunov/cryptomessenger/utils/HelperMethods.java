@@ -1,10 +1,14 @@
 package alexparunov.cryptomessenger.utils;
 
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.Charset;
+import java.util.Iterator;
 
 public class HelperMethods {
 
@@ -44,5 +48,19 @@ public class HelperMethods {
       }
     }
     return binary.toString();
+  }
+
+  public static byte[] bitsStreamToByteArray(String stream) {
+    Iterable iterable = Splitter.fixedLength(8).split(stream);
+    byte[] resultBytes = new byte[Iterables.size(iterable)];
+    Iterator iterator = iterable.iterator();
+    int i = 0;
+    while(iterator.hasNext()) {
+      Integer byteAsInt = Integer.parseInt(iterator.next().toString(),2);
+      resultBytes[i] = byteAsInt.byteValue();
+      i++;
+    }
+
+    return resultBytes;
   }
 }

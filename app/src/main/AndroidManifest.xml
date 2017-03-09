@@ -37,9 +37,12 @@
         android:parentActivityName=".MainActivity"
         android:screenOrientation="portrait">
     </activity>
-    <activity android:name=".activities.stego.StegoActivity"
-              android:parentActivityName=".activities.encrypt.EncryptActivity"
-              android:screenOrientation="portrait">
+    <activity
+        android:name=".activities.stego.StegoActivity"
+        android:parentActivityName=".activities.encrypt.EncryptActivity"
+        android:screenOrientation="portrait">
+    </activity>
+    <activity android:name=".activities.decrypt.DecryptActivity">
     </activity>
   </application>
 
