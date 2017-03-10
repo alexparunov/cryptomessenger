@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 
 import java.util.Map;
 
+import alexparunov.cryptomessenger.algorithms.Extracting;
+
 /**
  * Created by Alexander Parunov on 3/10/17.
  */
@@ -44,17 +46,27 @@ class DecryptInteractorImpl implements DecryptInteractor {
     @Override
     protected Map doInBackground(Void... params) {
       Map map = null;
-      BitmapFactory.Options options = new BitmapFactory.Options();
-      options.inPreferredConfig = Bitmap.Config.RGB_565;
-      options.inScaled = false;
-      Bitmap stegoImage = BitmapFactory.decodeFile(stegoImagePath, options);
+      Bitmap stegoImage = null;
+
+      if (!stegoImagePath.isEmpty()) {
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        options.inScaled = false;
+
+        stegoImage = BitmapFactory.decodeFile(stegoImagePath, options);
+      }
+
+      if (stegoImage != null) {
+        map = Extracting.extractSecretMessage(stegoImage);
+      }
 
       return map;
     }
 
     @Override
     protected void onPostExecute(Map map) {
-      if(map != null) {
+      if (map != null) {
         mListener.onPerformDecryptionSuccess(map);
       } else {
         mListener.onPerformDecryptionFailure();

@@ -33,6 +33,7 @@ public class Embedding {
     //Generate and place random 13 bit array of 0-1 in (0,0) pixel
     int key[] = generateKey();
 
+
     //Put [0,3] pixels into red
     int red_sum = -1;
     for(int i=0;i<=3;i++) {
@@ -113,6 +114,7 @@ public class Embedding {
   public static Bitmap embedSecretText(String secretText, Bitmap coverImage) {
     Bitmap stegoImage = Bitmap.createBitmap(coverImage);
 
+    StandardMethods.showLog("EMB","");
     String sTextInBin = HelperMethods.stringToBinaryStream(secretText);
 
     int secretMessageLen = sTextInBin.length();
@@ -126,29 +128,16 @@ public class Embedding {
       return null;
     }
 
-    //Generate and place random 13 bit array of 0-1 in (0,0) pixel
+    //Generate and place random 16 bit array of 0-1 in (0,0) pixel
     int key[] = generateKey();
 
-    //Put [0,3] pixels into red
-    int red_sum = -1;
-    for(int i=0;i<=3;i++) {
-      red_sum += (int) Math.pow(key[i]*2,3-i);
-    }
 
-    //Put [4,8] pixels into green
-    int green_sum = -1;
-    for(int i=4;i<=8;i++) {
-      green_sum += (int) Math.pow(key[i]*2,8-i);
-    }
+    //stegoImage.setPixel(0,0, Color.rgb(red_sum,green_sum,blue_sum));
+    //int pix = stegoImage.getPixel(0,0);
+    //StandardMethods.showLog("EMB","(r,g,b): ("+Color.red(pix)+","+Color.green(pix)+","+Color.blue(pix)+")");
+    //StandardMethods.showLog("EMB","(r,g,b): ("+red_sum+","+green_sum+","+blue_sum+")");
 
-    //Put[9,12] pixels into blue
-    int blue_sum = -1;
-    for(int i=9;i<=12;i++) {
-      blue_sum += (int) Math.pow(key[i]*2,12-i);
-    }
-
-    stegoImage.setPixel(0,0, Color.rgb(red_sum,green_sum,blue_sum));
-
+    for(int i=0;i<16;i++) StandardMethods.showLog("EMB",key[i]);
     //To check if secret message is text
     stegoImage.setPixel(0,1, Color.rgb(Constants.COLOR_RGB_TEXT,
                                        Constants.COLOR_RGB_TEXT,
@@ -224,7 +213,7 @@ public class Embedding {
 
   private static int[] generateKey() {
     final int[] bits = {0,1};
-    int[] result = new int[13];
+    int[] result = new int[16];
 
     int n,i;
     Random random = new Random();

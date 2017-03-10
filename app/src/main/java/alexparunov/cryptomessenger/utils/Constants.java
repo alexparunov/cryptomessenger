@@ -21,6 +21,7 @@ public class Constants {
   // Secret Message Types
   public static final int TYPE_TEXT = 0;
   public static final int TYPE_IMAGE = 1;
+  public static final int TYPE_UNDEFINED = 2;
 
   //Bundle arguments
   public static final String EXTRA_STEGO_IMAGE_PATH = "stego_image_path";
@@ -29,4 +30,6 @@ public class Constants {
   public static final int COLOR_RGB_END = 0;
   public static final int COLOR_RGB_TEXT = 0;
   public static final int COLOR_RGB_IMAGE = 255;
+
+
 }
