@@ -6,8 +6,6 @@ import android.graphics.Color;
 import java.util.HashMap;
 import java.util.Map;
 
-import alexparunov.cryptomessenger.utils.StandardMethods;
-
 public class Extracting {
 
   public static Map extractSecretMessage(Bitmap stegoImage) {
@@ -18,41 +16,45 @@ public class Extracting {
     int width = stegoImage.getWidth();
     int height = stegoImage.getHeight();
 
-    int key[] = new int[13];
-    int i = 0;
+    int key[] = new int[16];
 
     //Extract Key
-    int keyPixel = stegoImage.getPixel(0,0);
+    int keyPixel = stegoImage.getPixel(0, 0);
 
     int red = Color.red(keyPixel);
     int green = Color.green(keyPixel);
     int blue = Color.blue(keyPixel);
-    StandardMethods.showLog("EXT","(r,g,b): ("+red+","+green+","+blue+")");
 
-    for(int j = 0; j < 4; ++j) {
-      key[i] = red & 8;
-      red <<= 1;
-      i++;
+    int k = 4;
+    int redA[] = new int[5];
+    for (int i = 4; i >= 0; --i) {
+      redA[i] = red % 2;
+      red /= 2;
+      key[k] = redA[i];
+      k--;
     }
 
-    for(int j = 0; j < 5; ++j) {
-      key[i] = green & 16;
-      green <<= 1;
-      i++;
+    k = 10;
+    int greenA[] = new int[6];
+    for (int i = 5; i >= 0; --i) {
+      greenA[i] = green % 2;
+      green /= 2;
+      key[k] = greenA[i];
+      k--;
     }
 
-    for(int j = 0; j < 4; ++j) {
-      key[i] = blue & 8;
-      blue <<= 1;
-      i++;
+    k = 15;
+    int blueA[] = new int[5];
+    for (int i = 4; i >= 0; --i) {
+      blueA[i] = blue % 2;
+      blue /= 2;
+      key[k] = blueA[i];
+      k--;
     }
 
-    for(int j = 0; j< 13;j++) {
-      StandardMethods.showLog("EXT",key[j]);
-    }
 
-    for(int x = 0; x < width; ++x) {
-      for(int y = 2; y < height; ++y) {
+    for (int x = 0; x < width; ++x) {
+      for (int y = 2; y < height; ++y) {
 
       }
     }

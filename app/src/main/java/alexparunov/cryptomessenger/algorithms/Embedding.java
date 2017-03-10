@@ -8,7 +8,6 @@ import java.util.Random;
 
 import alexparunov.cryptomessenger.utils.Constants;
 import alexparunov.cryptomessenger.utils.HelperMethods;
-import alexparunov.cryptomessenger.utils.StandardMethods;
 
 public class Embedding {
 
@@ -32,27 +31,59 @@ public class Embedding {
     int key[] = generateKey();
 
     int red_sum = 0;
-    for(int j=0;j<=4;++j) {
-      int number = (int) Math.pow(key[j]*2,4-j);
-      StandardMethods.showLog("EMB",j+": "+key[j]+" num: "+number);
+    for (int j = 0; j <= 4; ++j) {
+      int number = (int) Math.pow(key[j] * 2, 4 - j);
       red_sum += number;
     }
 
     int green_sum = 0;
-    for(int j=5;j<=10;++j) {
-      int number = (int) Math.pow(key[j]*2,10-j);
-      StandardMethods.showLog("EMB",j+": "+key[j]+" num: "+number);
+    for (int j = 5; j <= 10; ++j) {
+      int number = (int) Math.pow(key[j] * 2, 10 - j);
       green_sum += number;
     }
 
     int blue_sum = 0;
-    for(int j=11;j<=15;++j) {
-      int number = (int) Math.pow(key[j]*2,15-j);
-      StandardMethods.showLog("EMB",j+": "+key[j]+" num: "+number);
+    for (int j = 11; j <= 15; ++j) {
+      int number = (int) Math.pow(key[j] * 2, 15 - j);
       blue_sum += number;
     }
 
     stegoImage.setPixel(0, 0, Color.rgb(red_sum, green_sum, blue_sum));
+
+    //Update (0,0) pixel with color and then change key based on pixel change
+    stegoImage.setPixel(0, 0, Color.rgb(red_sum, green_sum, blue_sum));
+
+    int keyPixel = stegoImage.getPixel(0, 0);
+    int red = Color.red(keyPixel);
+    int green = Color.green(keyPixel);
+    int blue = Color.blue(keyPixel);
+
+    int k = 4;
+    int redA[] = new int[5];
+    for (int i = 4; i >= 0; --i) {
+      redA[i] = red % 2;
+      red /= 2;
+      key[k] = redA[i];
+      k--;
+    }
+
+    k = 10;
+    int greenA[] = new int[6];
+    for (int i = 5; i >= 0; --i) {
+      greenA[i] = green % 2;
+      green /= 2;
+      key[k] = greenA[i];
+      k--;
+    }
+
+    k = 15;
+    int blueA[] = new int[5];
+    for (int i = 4; i >= 0; --i) {
+      blueA[i] = blue % 2;
+      blue /= 2;
+      key[k] = blueA[i];
+      k--;
+    }
 
     //To check if secret message is image
     stegoImage.setPixel(0, 1, Color.rgb(Constants.COLOR_RGB_IMAGE,
@@ -131,32 +162,57 @@ public class Embedding {
     int key[] = generateKey();
 
     int red_sum = 0;
-    for(int j=0;j<=4;++j) {
-      int number = (int) Math.pow(key[j]*2,4-j);
-      StandardMethods.showLog("EMB",j+": "+key[j]+" num: "+number);
+    for (int j = 0; j <= 4; ++j) {
+      int number = (int) Math.pow(key[j] * 2, 4 - j);
       red_sum += number;
     }
 
     int green_sum = 0;
-    for(int j=5;j<=10;++j) {
-      int number = (int) Math.pow(key[j]*2,10-j);
-      StandardMethods.showLog("EMB",j+": "+key[j]+" num: "+number);
+    for (int j = 5; j <= 10; ++j) {
+      int number = (int) Math.pow(key[j] * 2, 10 - j);
       green_sum += number;
     }
 
     int blue_sum = 0;
-    for(int j=11;j<=15;++j) {
-      int number = (int) Math.pow(key[j]*2,15-j);
-      StandardMethods.showLog("EMB",j+": "+key[j]+" num: "+number);
+    for (int j = 11; j <= 15; ++j) {
+      int number = (int) Math.pow(key[j] * 2, 15 - j);
       blue_sum += number;
     }
 
-    StandardMethods.showLog("EMB","(r,g,b)_2: ("+red_sum+","+green_sum+","+blue_sum+")");
-    stegoImage.setPixel(0,0, Color.rgb(red_sum,green_sum,blue_sum));
-    int pix = stegoImage.getPixel(0,0);
-    StandardMethods.showLog("EMB","(r,g,b): ("+Color.red(pix)+","+Color.green(pix)+","+Color.blue(pix)+")");
+    //Update (0,0) pixel with color and then change key based on pixel change
+    stegoImage.setPixel(0, 0, Color.rgb(red_sum, green_sum, blue_sum));
 
-    //for (int j = 0; j < 16; j++) StandardMethods.showLog("EMB", j+": " + key[j]);
+    int keyPixel = stegoImage.getPixel(0, 0);
+    int red = Color.red(keyPixel);
+    int green = Color.green(keyPixel);
+    int blue = Color.blue(keyPixel);
+
+    int k = 4;
+    int redA[] = new int[5];
+    for (int i = 4; i >= 0; --i) {
+      redA[i] = red % 2;
+      red /= 2;
+      key[k] = redA[i];
+      k--;
+    }
+
+    k = 10;
+    int greenA[] = new int[6];
+    for (int i = 5; i >= 0; --i) {
+      greenA[i] = green % 2;
+      green /= 2;
+      key[k] = greenA[i];
+      k--;
+    }
+
+    k = 15;
+    int blueA[] = new int[5];
+    for (int i = 4; i >= 0; --i) {
+      blueA[i] = blue % 2;
+      blue /= 2;
+      key[k] = blueA[i];
+      k--;
+    }
 
     //To check if secret message is text
     stegoImage.setPixel(0, 1, Color.rgb(Constants.COLOR_RGB_TEXT,
