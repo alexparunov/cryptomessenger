@@ -18,6 +18,10 @@ public class Constants {
   public static final String SHARED_PREF_NAME = "CryptoMessengerSP";
   public static final String PREF_COVER = "coverImagePref";
 
+  //Stego Image Map Keys
+  public static final String MESSAGE_TYPE = "message_type";
+  public static final String MESSAGE_BITS = "message_bits";
+
   // Secret Message Types
   public static final int TYPE_TEXT = 0;
   public static final int TYPE_IMAGE = 1;

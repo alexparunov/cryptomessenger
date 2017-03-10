@@ -6,6 +6,8 @@ import android.graphics.Color;
 import java.util.HashMap;
 import java.util.Map;
 
+import alexparunov.cryptomessenger.utils.Constants;
+
 public class Extracting {
 
   public static Map extractSecretMessage(Bitmap stegoImage) {
@@ -52,6 +54,28 @@ public class Extracting {
       k--;
     }
 
+    int typePixel = stegoImage.getPixel(0, 1);
+    int tRed = Color.red(typePixel);
+    int tGreen = Color.green(typePixel);
+    int tBlue = Color.blue(typePixel);
+
+    if (tRed == Constants.COLOR_RGB_TEXT &&
+      tGreen == Constants.COLOR_RGB_TEXT && tBlue == Constants.COLOR_RGB_TEXT) {
+
+      map.put(Constants.MESSAGE_TYPE, Constants.TYPE_TEXT);
+
+    } else if (tRed == Constants.COLOR_RGB_IMAGE &&
+      tGreen == Constants.COLOR_RGB_IMAGE && tBlue == Constants.COLOR_RGB_IMAGE) {
+
+      map.put(Constants.MESSAGE_TYPE, Constants.TYPE_IMAGE);
+
+    } else {
+
+      map.put(Constants.MESSAGE_TYPE, Constants.TYPE_UNDEFINED);
+      map.put(Constants.MESSAGE_BITS, "");
+      return map;
+
+    }
 
     for (int x = 0; x < width; ++x) {
       for (int y = 2; y < height; ++y) {
