@@ -35,7 +35,6 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
 
     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
     bitmapOptions.inPreferredConfig = Bitmap.Config.RGB_565;
-    bitmapOptions.inScaled = false;
     Bitmap bitmap = BitmapFactory.decodeFile(tempPath, bitmapOptions);
 
     int dimension = Math.min(bitmap.getWidth(), bitmap.getHeight());
@@ -85,7 +84,6 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
 
     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
     bitmapOptions.inPreferredConfig = Bitmap.Config.RGB_565;
-    bitmapOptions.inScaled = false;
     Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), bitmapOptions);
     file.delete();
 
@@ -162,7 +160,6 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     }
 
     mView.showProgressDialog();
-    StandardMethods.showLog("EPI", "beforePerformStego");
     mInteractor.performSteganography(mView.getSecretMessage(), coverImage, null);
   }
 
@@ -183,7 +180,6 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     }
 
     mView.showProgressDialog();
-    StandardMethods.showLog("EPI", "beforePerformStego");
     mInteractor.performSteganography(null, coverImage, secretImage);
   }
 

@@ -1,10 +1,8 @@
 package alexparunov.cryptomessenger.algorithms;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import java.util.Random;
 
@@ -16,7 +14,7 @@ public class Embedding {
 
   @Nullable
   public static Bitmap embedSecretImage(Bitmap coverImage, Bitmap secretImage) {
-    Bitmap stegoImage = Bitmap.createBitmap(coverImage);
+    Bitmap stegoImage = coverImage.copy(Bitmap.Config.RGB_565, true);
 
     String sImageInBin = HelperMethods.bitmapToBinaryStream(secretImage);
     int secretImageLen = sImageInBin.length();
@@ -30,34 +28,36 @@ public class Embedding {
       return null;
     }
 
-    //Generate and place random 13 bit array of 0-1 in (0,0) pixel
+    //Generate and place random 16 bit array of 0-1 in (0,0) pixel
     int key[] = generateKey();
 
-
-    //Put [0,3] pixels into red
-    int red_sum = -1;
-    for(int i=0;i<=3;i++) {
-      red_sum += (int) Math.pow(key[i]*2,3-i);
+    int red_sum = 0;
+    for(int j=0;j<=4;++j) {
+      int number = (int) Math.pow(key[j]*2,4-j);
+      StandardMethods.showLog("EMB",j+": "+key[j]+" num: "+number);
+      red_sum += number;
     }
 
-    //Put [4,8] pixels into green
-    int green_sum = -1;
-    for(int i=4;i<=8;i++) {
-      green_sum += (int) Math.pow(key[i]*2,8-i);
+    int green_sum = 0;
+    for(int j=5;j<=10;++j) {
+      int number = (int) Math.pow(key[j]*2,10-j);
+      StandardMethods.showLog("EMB",j+": "+key[j]+" num: "+number);
+      green_sum += number;
     }
 
-    //Put[9,12] pixels into blue
-    int blue_sum = -1;
-    for(int i=9;i<=12;i++) {
-      blue_sum += (int) Math.pow(key[i]*2,12-i);
+    int blue_sum = 0;
+    for(int j=11;j<=15;++j) {
+      int number = (int) Math.pow(key[j]*2,15-j);
+      StandardMethods.showLog("EMB",j+": "+key[j]+" num: "+number);
+      blue_sum += number;
     }
 
-    stegoImage.setPixel(0,0,Color.rgb(red_sum,green_sum,blue_sum));
+    stegoImage.setPixel(0, 0, Color.rgb(red_sum, green_sum, blue_sum));
 
     //To check if secret message is image
-    stegoImage.setPixel(0,1, Color.rgb(Constants.COLOR_RGB_IMAGE,
-                             Constants.COLOR_RGB_IMAGE,
-                             Constants.COLOR_RGB_IMAGE));
+    stegoImage.setPixel(0, 1, Color.rgb(Constants.COLOR_RGB_IMAGE,
+      Constants.COLOR_RGB_IMAGE,
+      Constants.COLOR_RGB_IMAGE));
     int endX = 0, endY = 2;
 
     outerloop:
@@ -74,7 +74,7 @@ public class Embedding {
             }
 
             //Action for LSB
-            if((key[keyPos] ^ LSB2(colors[c])) == 1) {
+            if ((key[keyPos] ^ LSB2(colors[c])) == 1) {
               action = action(colors[c], sImageInBin.charAt(embImPos));
               colors[c] += action;
               embImPos++;
@@ -86,10 +86,10 @@ public class Embedding {
           stegoImage.setPixel(x, y, newPixel);
         } else {
 
-          if(y < height - 1) {
+          if (y < height - 1) {
             endX = x;
             endY = y + 1;
-          } else if(endX < width - 1) {
+          } else if (endX < width - 1) {
             endX = x + 1;
             endY = y;
           } else {
@@ -104,17 +104,16 @@ public class Embedding {
 
     //End of secret message flag
     stegoImage.setPixel(endX, endY, Color.rgb(Constants.COLOR_RGB_END,
-                                    Constants.COLOR_RGB_END,
-                                    Constants.COLOR_RGB_END));
+      Constants.COLOR_RGB_END,
+      Constants.COLOR_RGB_END));
 
     return stegoImage;
   }
 
   @Nullable
   public static Bitmap embedSecretText(String secretText, Bitmap coverImage) {
-    Bitmap stegoImage = Bitmap.createBitmap(coverImage);
+    Bitmap stegoImage = coverImage.copy(Bitmap.Config.RGB_565, true);
 
-    StandardMethods.showLog("EMB","");
     String sTextInBin = HelperMethods.stringToBinaryStream(secretText);
 
     int secretMessageLen = sTextInBin.length();
@@ -131,17 +130,38 @@ public class Embedding {
     //Generate and place random 16 bit array of 0-1 in (0,0) pixel
     int key[] = generateKey();
 
+    int red_sum = 0;
+    for(int j=0;j<=4;++j) {
+      int number = (int) Math.pow(key[j]*2,4-j);
+      StandardMethods.showLog("EMB",j+": "+key[j]+" num: "+number);
+      red_sum += number;
+    }
 
-    //stegoImage.setPixel(0,0, Color.rgb(red_sum,green_sum,blue_sum));
-    //int pix = stegoImage.getPixel(0,0);
-    //StandardMethods.showLog("EMB","(r,g,b): ("+Color.red(pix)+","+Color.green(pix)+","+Color.blue(pix)+")");
-    //StandardMethods.showLog("EMB","(r,g,b): ("+red_sum+","+green_sum+","+blue_sum+")");
+    int green_sum = 0;
+    for(int j=5;j<=10;++j) {
+      int number = (int) Math.pow(key[j]*2,10-j);
+      StandardMethods.showLog("EMB",j+": "+key[j]+" num: "+number);
+      green_sum += number;
+    }
 
-    for(int i=0;i<16;i++) StandardMethods.showLog("EMB",key[i]);
+    int blue_sum = 0;
+    for(int j=11;j<=15;++j) {
+      int number = (int) Math.pow(key[j]*2,15-j);
+      StandardMethods.showLog("EMB",j+": "+key[j]+" num: "+number);
+      blue_sum += number;
+    }
+
+    StandardMethods.showLog("EMB","(r,g,b)_2: ("+red_sum+","+green_sum+","+blue_sum+")");
+    stegoImage.setPixel(0,0, Color.rgb(red_sum,green_sum,blue_sum));
+    int pix = stegoImage.getPixel(0,0);
+    StandardMethods.showLog("EMB","(r,g,b): ("+Color.red(pix)+","+Color.green(pix)+","+Color.blue(pix)+")");
+
+    //for (int j = 0; j < 16; j++) StandardMethods.showLog("EMB", j+": " + key[j]);
+
     //To check if secret message is text
-    stegoImage.setPixel(0,1, Color.rgb(Constants.COLOR_RGB_TEXT,
-                                       Constants.COLOR_RGB_TEXT,
-                                       Constants.COLOR_RGB_TEXT));
+    stegoImage.setPixel(0, 1, Color.rgb(Constants.COLOR_RGB_TEXT,
+      Constants.COLOR_RGB_TEXT,
+      Constants.COLOR_RGB_TEXT));
     int endX = 0, endY = 2;
 
     outerloop:
@@ -158,7 +178,7 @@ public class Embedding {
             }
 
             //Action for LSB
-            if((key[keyPos] ^ LSB2(colors[c])) == 1) {
+            if ((key[keyPos] ^ LSB2(colors[c])) == 1) {
               action = action(colors[c], sTextInBin.charAt(embMesPos));
               colors[c] += action;
               embMesPos++;
@@ -170,10 +190,10 @@ public class Embedding {
           stegoImage.setPixel(x, y, newPixel);
         } else {
 
-          if(y < height - 1) {
+          if (y < height - 1) {
             endX = x;
             endY = y + 1;
-          } else if(endX < width - 1) {
+          } else if (endX < width - 1) {
             endX = x + 1;
             endY = y;
           } else {
@@ -188,8 +208,8 @@ public class Embedding {
 
     //End of secret message flag
     stegoImage.setPixel(endX, endY, Color.rgb(Constants.COLOR_RGB_END,
-                                    Constants.COLOR_RGB_END,
-                                    Constants.COLOR_RGB_END));
+      Constants.COLOR_RGB_END,
+      Constants.COLOR_RGB_END));
     return stegoImage;
   }
 
@@ -212,13 +232,13 @@ public class Embedding {
   }
 
   private static int[] generateKey() {
-    final int[] bits = {0,1};
+    final int[] bits = {0, 1};
     int[] result = new int[16];
 
-    int n,i;
+    int n, i;
     Random random = new Random();
 
-    for(i=0;i<13;++i) {
+    for (i = 0; i < 16; ++i) {
       n = random.nextInt(2);
       result[i] = bits[n];
     }
