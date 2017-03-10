@@ -2,7 +2,6 @@ package alexparunov.cryptomessenger.activities.decrypt;
 
 import java.io.File;
 
-import alexparunov.cryptomessenger.utils.StandardMethods;
 
 /**
  * Created by Alexander Parunov on 3/9/17.
