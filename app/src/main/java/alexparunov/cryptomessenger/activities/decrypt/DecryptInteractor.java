@@ -5,4 +5,7 @@ package alexparunov.cryptomessenger.activities.decrypt;
  */
 
 interface DecryptInteractor {
+
+  void performDecryption(String path);
+
 }

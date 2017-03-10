@@ -20,6 +20,8 @@
   <!--Messages-->
   <string name="encrypted_success">Message is successfully encrypted !</string>
   <string name="encrypted_fail">Failure during message encryption</string>
+  <string name="decrypt_success">Message is successfully decrypted</string>
+  <string name="decrypt_fail">Failure during message decryption</string>
   <string name="compress_error">Failure during image compression</string>
   <string name="save_image_success">Stego Image was successfully saved !</string>
   <string name="save_image_error">Failure during image saving</string>
