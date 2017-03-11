@@ -10,7 +10,7 @@ import alexparunov.cryptomessenger.R;
  * Created by Alexander Parunov on 3/9/17.
  */
 
-class DecryptPresenterImpl implements DecryptPresenter, DecryptInteractorImpl.DecryptInteractorListener{
+class DecryptPresenterImpl implements DecryptPresenter, DecryptInteractorImpl.DecryptInteractorListener {
 
   private DecryptView mView;
   private DecryptInteractor mInteractor;
@@ -35,7 +35,7 @@ class DecryptPresenterImpl implements DecryptPresenter, DecryptInteractorImpl.De
 
   @Override
   public void decryptMessage() {
-    if(stegoImagePath.isEmpty()) {
+    if (stegoImagePath.isEmpty()) {
       mView.showToast(R.string.stego_image_not_selected);
     } else {
       mInteractor.performDecryption(stegoImagePath);

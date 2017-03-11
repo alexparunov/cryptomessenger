@@ -34,7 +34,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     int IMAGE_SIZE = 1000;
 
     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-    bitmapOptions.inPreferredConfig = Bitmap.Config.RGB_565;
+    bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
     Bitmap bitmap = BitmapFactory.decodeFile(tempPath, bitmapOptions);
 
     int dimension = Math.min(bitmap.getWidth(), bitmap.getHeight());
@@ -47,6 +47,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     }
 
     Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, IMAGE_SIZE, IMAGE_SIZE, false);
+    scaledBitmap.setPremultiplied(false);
 
     String path = Environment.getExternalStorageDirectory() + File.separator + "CryptoMessenger";
 
@@ -83,7 +84,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     }
 
     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-    bitmapOptions.inPreferredConfig = Bitmap.Config.RGB_565;
+    bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
     Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), bitmapOptions);
     file.delete();
 
@@ -97,6 +98,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     }
 
     Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, IMAGE_SIZE, IMAGE_SIZE, false);
+    scaledBitmap.setPremultiplied(false);
 
     String path = Environment.getExternalStorageDirectory() + File.separator + "CryptoMessenger";
     File folder = new File(path);

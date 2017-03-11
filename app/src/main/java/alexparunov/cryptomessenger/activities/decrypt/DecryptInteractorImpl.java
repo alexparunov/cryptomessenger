@@ -51,8 +51,9 @@ class DecryptInteractorImpl implements DecryptInteractor {
       if (!stegoImagePath.isEmpty()) {
 
         BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         options.inScaled = false;
+        options.inPremultiplied = false;
 
         stegoImage = BitmapFactory.decodeFile(stegoImagePath, options);
       }
