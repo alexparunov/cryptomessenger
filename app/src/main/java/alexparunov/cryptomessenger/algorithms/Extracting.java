@@ -34,25 +34,19 @@ public class Extracting {
 
     StandardMethods.showLog("EXT","Key2: "+red+" "+green+" "+blue);
 
-    int k = 7;
     for (int i = 7; i >= 0; --i) {
-      key[k] = red % 2;
+      key[i] = red % 2;
       red /= 2;
-      k--;
     }
 
-    k = 13;
     for (int i = 7; i >= 0; --i) {
-      key[k] = green % 2;
+      key[i+8] = green % 2;
       green /= 2;
-      k--;
     }
 
-    k = 23;
     for (int i = 7; i >= 0; --i) {
-      key[k] = blue % 2;
+      key[i+16] = blue % 2;
       blue /= 2;
-      k--;
     }
 
     for(int a = 0; a < 24;a++) Log.w("EXT",key[a]+"");
@@ -104,8 +98,8 @@ public class Extracting {
     String secretMessageStr = secretMessage.toString();
     int secretLen = secretMessageStr.length();
 
-    //Cut unnecessary (0-8) pixels
-    String secretMessageFinal = secretMessageStr.substring(0, secretLen - secretLen % 8);
+    //Cut unnecessary (0-2) pixels
+    String secretMessageFinal = secretMessageStr.substring(0, secretLen - secretLen % 2);
     byte[] messageBytes = HelperMethods.bitsStreamToByteArray(secretMessageFinal);
     String message = new String(messageBytes);
 
