@@ -66,7 +66,7 @@ public class Embedding {
         int pixel = coverImage.getPixel(x, y);
 
         if (embImPos < secretImageLen) {
-          int colors[] = { Color.red(pixel), Color.green(pixel), Color.blue(pixel) };
+          int colors[] = {Color.red(pixel), Color.green(pixel), Color.blue(pixel)};
 
           for (int c = 0; c < 3; c++) {
             if (embImPos == secretImageLen) {
@@ -166,7 +166,7 @@ public class Embedding {
         int pixel = coverImage.getPixel(x, y);
 
         if (embMesPos < secretMessageLen) {
-          int colors[] = { Color.red(pixel), Color.green(pixel), Color.blue(pixel) };
+          int colors[] = {Color.red(pixel), Color.green(pixel), Color.blue(pixel)};
 
           for (int c = 0; c < 3; c++) {
             if (embMesPos == secretMessageLen) {

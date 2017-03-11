@@ -2,7 +2,6 @@ package alexparunov.cryptomessenger.algorithms;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.util.Log;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,12 +15,8 @@ public class Extracting {
   public static Map extractSecretMessage(Bitmap stegoImage) {
     Map map = new HashMap();
 
-    StringBuilder secretMessage = new StringBuilder();
-
     int width = stegoImage.getWidth();
     int height = stegoImage.getHeight();
-
-    int keyPos = 0;
 
     int key[] = new int[24];
 
@@ -32,24 +27,34 @@ public class Extracting {
     int green = Color.green(keyPixel);
     int blue = Color.blue(keyPixel);
 
-    StandardMethods.showLog("EXT","Key2: "+red+" "+green+" "+blue);
+    StandardMethods.showLog("EXT", "Key2: " + red + " " + green + " " + blue);
 
-    for (int i = 7; i >= 0; --i) {
-      key[i] = red % 2;
-      red /= 2;
+    String red_bin = Integer.toBinaryString(red);
+    red_bin = "00000000" + red_bin;
+    red_bin = red_bin.substring(red_bin.length() - 8);
+    StandardMethods.showLog("EMB", "RED: " + red_bin);
+
+    for (int i = 0; i <= 7; i++) {
+      key[i] = (red_bin.charAt(i) == '1' ? 1 : 0);
     }
 
-    for (int i = 7; i >= 0; --i) {
-      key[i+8] = green % 2;
-      green /= 2;
+    String green_bin = Integer.toBinaryString(green);
+    green_bin = "00000000" + green_bin;
+    green_bin = green_bin.substring(green_bin.length() - 8);
+    StandardMethods.showLog("EMB", "GREEN: " + green_bin);
+
+    for (int i = 0; i <= 7; i++) {
+      key[i + 8] = (green_bin.charAt(i) == '1' ? 1 : 0);
     }
 
-    for (int i = 7; i >= 0; --i) {
-      key[i+16] = blue % 2;
-      blue /= 2;
-    }
+    String blue_bin = Integer.toBinaryString(blue);
+    blue_bin = "00000000" + blue_bin;
+    blue_bin = blue_bin.substring(blue_bin.length() - 8);
+    StandardMethods.showLog("EMB", "BLUE: " + blue_bin);
 
-    for(int a = 0; a < 24;a++) Log.w("EXT",key[a]+"");
+    for (int i = 0; i <= 7; i++) {
+      key[i + 16] = (blue_bin.charAt(i) == '1' ? 1 : 0);
+    }
 
     int typePixel = stegoImage.getPixel(0, 1);
     int tRed = Color.red(typePixel);
@@ -72,6 +77,9 @@ public class Extracting {
 
     }
 
+    StringBuilder sb = new StringBuilder();
+
+    int keyPos = 0;
     outerloop:
     for (int x = 0; x < width; ++x) {
       for (int y = 2; y < height; ++y) {
@@ -87,7 +95,7 @@ public class Extracting {
 
             if ((key[keyPos] ^ LSB2(colors[c])) == 1) {
               int lsb = LSB(colors[c]);
-              secretMessage.append(lsb);
+              sb.append(lsb);
               keyPos = (keyPos + 1) % key.length;
             }
           }
@@ -95,16 +103,17 @@ public class Extracting {
       }
     }
 
-    String secretMessageStr = secretMessage.toString();
-    int secretLen = secretMessageStr.length();
+    String sm = sb.toString();
+    int sL = sm.length();
 
-    //Cut unnecessary (0-2) pixels
-    String secretMessageFinal = secretMessageStr.substring(0, secretLen - secretLen % 2);
-    byte[] messageBytes = HelperMethods.bitsStreamToByteArray(secretMessageFinal);
+    //Cut unnecessary [0-7] pixels
+    sm = sm.substring(0, sL - sL % 8);
+    byte[] messageBytes = HelperMethods.bitsStreamToByteArray(sm);
     String message = new String(messageBytes);
 
-    StandardMethods.showLog("EXT","Decrypted Message: "+secretMessageFinal);
-    StandardMethods.showLog("EXT","Decrypted Message Length: "+secretMessageFinal.length());
+    StandardMethods.showLog("EXT", "Decrypted Message: " + sm);
+    StandardMethods.showLog("EXT", "Decrypted Message Length: " + sm.length());
+    StandardMethods.showLog("EXT", "Decrypted Message String: " + message);
 
     map.put(Constants.MESSAGE_BITS, message);
     return map;
