@@ -13,7 +13,7 @@ import alexparunov.cryptomessenger.utils.StandardMethods;
 public class Extracting {
 
   public static Map extractSecretMessage(Bitmap stegoImage) {
-    Map map = new HashMap();
+    Map<String, Object> map = new HashMap<String, Object>();
 
     int width = stegoImage.getWidth();
     int height = stegoImage.getHeight();
@@ -85,7 +85,7 @@ public class Extracting {
       for (int y = 2; y < height; ++y) {
         int pixel = stegoImage.getPixel(x, y);
 
-        int colors[] = { Color.red(pixel), Color.green(pixel), Color.blue(pixel) };
+        int colors[] = {Color.red(pixel), Color.green(pixel), Color.blue(pixel)};
 
         if (colors[0] == 0 && colors[1] == 0 && colors[2] == Constants.COLOR_RGB_END) {
           break outerloop;
@@ -113,7 +113,6 @@ public class Extracting {
 
     StandardMethods.showLog("EXT", "Decrypted Message: " + sm);
     StandardMethods.showLog("EXT", "Decrypted Message Length: " + sm.length());
-    StandardMethods.showLog("EXT", "Decrypted Message String: " + message);
 
     map.put(Constants.MESSAGE_BITS, message);
     return map;

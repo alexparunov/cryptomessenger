@@ -20,6 +20,7 @@ public class Embedding {
 
     String sImageInBin = HelperMethods.bitmapToBinaryStream(secretImage);
     int secretImageLen = sImageInBin.length();
+
     int action, embImPos = 0, keyPos = 0;
 
     int width = coverImage.getWidth();
@@ -33,22 +34,36 @@ public class Embedding {
     //Generate and place random 24 bit array of 0-1 in (0,0) pixel
     int key[] = generateKey();
 
+    int temp_number;
+
     int red_sum = 0;
     for (int j = 0; j <= 7; ++j) {
-      int number = (int) Math.pow(key[j] * 2, 7 - j);
-      red_sum += number;
+      if (key[j] == 1) {
+        temp_number = (int) Math.pow(2, 7 - j);
+      } else {
+        temp_number = 0;
+      }
+      red_sum += temp_number;
     }
 
     int green_sum = 0;
     for (int j = 8; j <= 15; ++j) {
-      int number = (int) Math.pow(key[j] * 2, 15 - j);
-      green_sum += number;
+      if (key[j] == 1) {
+        temp_number = (int) Math.pow(2, 15 - j);
+      } else {
+        temp_number = 0;
+      }
+      green_sum += temp_number;
     }
 
     int blue_sum = 0;
     for (int j = 16; j <= 23; ++j) {
-      int number = (int) Math.pow(key[j] * 2, 23 - j);
-      blue_sum += number;
+      if (key[j] == 1) {
+        temp_number = (int) Math.pow(2, 23 - j);
+      } else {
+        temp_number = 0;
+      }
+      blue_sum += temp_number;
     }
 
     //Update (0,0) pixel with RGB_888 as for key values
@@ -132,23 +147,36 @@ public class Embedding {
 
     //Generate and place random 24 bit array of 0-1 in (0,0) pixel
     int key[] = generateKey();
+    int temp_number;
 
     int red_sum = 0;
     for (int j = 0; j <= 7; ++j) {
-      int number = (int) Math.pow(key[j] * 2, 7 - j);
-      red_sum += number;
+      if (key[j] == 1) {
+        temp_number = (int) Math.pow(2, 7 - j);
+      } else {
+        temp_number = 0;
+      }
+      red_sum += temp_number;
     }
 
     int green_sum = 0;
     for (int j = 8; j <= 15; ++j) {
-      int number = (int) Math.pow(key[j] * 2, 15 - j);
-      green_sum += number;
+      if (key[j] == 1) {
+        temp_number = (int) Math.pow(2, 15 - j);
+      } else {
+        temp_number = 0;
+      }
+      green_sum += temp_number;
     }
 
     int blue_sum = 0;
     for (int j = 16; j <= 23; ++j) {
-      int number = (int) Math.pow(key[j] * 2, 23 - j);
-      blue_sum += number;
+      if (key[j] == 1) {
+        temp_number = (int) Math.pow(2, 23 - j);
+      } else {
+        temp_number = 0;
+      }
+      blue_sum += temp_number;
     }
 
     //Update (0,0) pixel with RGB_888 as for key values
