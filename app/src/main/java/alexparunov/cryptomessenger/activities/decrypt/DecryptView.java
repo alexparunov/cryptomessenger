@@ -23,4 +23,6 @@ interface DecryptView {
   void showProgressDialog();
 
   void stopProgressDialog();
+
+  void startDecryptResultActivity(String secretMessage, String secretImagePath);
 }

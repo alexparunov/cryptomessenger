@@ -29,6 +29,8 @@ public class Constants {
 
   //Bundle arguments
   public static final String EXTRA_STEGO_IMAGE_PATH = "stego_image_path";
+  public static final String EXTRA_SECRET_TEXT_RESULT = "secret_text_result";
+  public static final String EXTRA_SECRET_IMAGE_RESULT = "secret_image_result";
 
   //Colors for Stego Image
   public static final int COLOR_RGB_END = 1;

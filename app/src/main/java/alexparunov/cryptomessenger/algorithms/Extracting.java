@@ -32,7 +32,6 @@ public class Extracting {
     String red_bin = Integer.toBinaryString(red);
     red_bin = "00000000" + red_bin;
     red_bin = red_bin.substring(red_bin.length() - 8);
-    StandardMethods.showLog("EMB", "RED: " + red_bin);
 
     for (int i = 0; i <= 7; i++) {
       key[i] = (red_bin.charAt(i) == '1' ? 1 : 0);
@@ -41,7 +40,6 @@ public class Extracting {
     String green_bin = Integer.toBinaryString(green);
     green_bin = "00000000" + green_bin;
     green_bin = green_bin.substring(green_bin.length() - 8);
-    StandardMethods.showLog("EMB", "GREEN: " + green_bin);
 
     for (int i = 0; i <= 7; i++) {
       key[i + 8] = (green_bin.charAt(i) == '1' ? 1 : 0);
@@ -50,7 +48,6 @@ public class Extracting {
     String blue_bin = Integer.toBinaryString(blue);
     blue_bin = "00000000" + blue_bin;
     blue_bin = blue_bin.substring(blue_bin.length() - 8);
-    StandardMethods.showLog("EMB", "BLUE: " + blue_bin);
 
     for (int i = 0; i <= 7; i++) {
       key[i + 16] = (blue_bin.charAt(i) == '1' ? 1 : 0);
@@ -108,13 +105,8 @@ public class Extracting {
 
     //Cut unnecessary [0-7] pixels
     sm = sm.substring(0, sL - sL % 8);
-    byte[] messageBytes = HelperMethods.bitsStreamToByteArray(sm);
-    String message = new String(messageBytes);
 
-    StandardMethods.showLog("EXT", "Decrypted Message: " + sm);
-    StandardMethods.showLog("EXT", "Decrypted Message Length: " + sm.length());
-
-    map.put(Constants.MESSAGE_BITS, message);
+    map.put(Constants.MESSAGE_BITS, sm);
     return map;
   }
 

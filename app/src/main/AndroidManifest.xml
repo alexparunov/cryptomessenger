@@ -42,9 +42,15 @@
         android:parentActivityName=".activities.encrypt.EncryptActivity"
         android:screenOrientation="portrait">
     </activity>
-    <activity android:name=".activities.decrypt.DecryptActivity"
-              android:parentActivityName=".MainActivity"
-              android:screenOrientation="portrait">
+    <activity
+        android:name=".activities.decrypt.DecryptActivity"
+        android:parentActivityName=".MainActivity"
+        android:screenOrientation="portrait">
+    </activity>
+    <activity
+        android:name=".activities.decrypt.DecryptResultActivity"
+        android:parentActivityName=".MainActivity"
+        android:screenOrientation="portrait">
     </activity>
   </application>
 

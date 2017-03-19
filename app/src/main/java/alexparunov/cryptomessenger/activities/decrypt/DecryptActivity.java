@@ -125,6 +125,21 @@ public class DecryptActivity extends AppCompatActivity implements DecryptView {
     }
   }
 
+  @Override
+  public void startDecryptResultActivity(String secretMessage, String secretImagePath) {
+    Intent intent = new Intent(DecryptActivity.this, DecryptResultActivity.class);
+
+    if (secretMessage != null) {
+      intent.putExtra(Constants.EXTRA_SECRET_TEXT_RESULT, secretMessage);
+    }
+
+    if (secretImagePath != null) {
+      intent.putExtra(Constants.EXTRA_SECRET_IMAGE_RESULT, secretImagePath);
+    }
+
+    startActivity(intent);
+  }
+
   public String getPath(Uri uri, Activity activity) {
     String[] projection = {MediaStore.MediaColumns.DATA};
     Cursor cursor = activity.managedQuery(uri, projection, null, null, null);

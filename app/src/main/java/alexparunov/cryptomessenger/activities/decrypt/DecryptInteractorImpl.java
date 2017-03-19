@@ -10,6 +10,7 @@ import alexparunov.cryptomessenger.R;
 import alexparunov.cryptomessenger.algorithms.Extracting;
 import alexparunov.cryptomessenger.utils.Constants;
 import alexparunov.cryptomessenger.utils.HelperMethods;
+import alexparunov.cryptomessenger.utils.StandardMethods;
 
 /**
  * Created by Alexander Parunov on 3/10/17.
@@ -77,7 +78,6 @@ class DecryptInteractorImpl implements DecryptInteractor {
           byte[] messageBytes = HelperMethods.bitsStreamToByteArray(bits);
           String message = new String(messageBytes);
           mListener.onPerformDecryptionSuccessText(message);
-
         } else if (type == Constants.TYPE_IMAGE) {
 
           String bits = (String) map.get(Constants.MESSAGE_BITS);
