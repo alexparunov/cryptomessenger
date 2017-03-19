@@ -1,7 +1,8 @@
 package alexparunov.cryptomessenger.activities.decrypt;
 
+import android.graphics.Bitmap;
+
 import java.io.File;
-import java.util.Map;
 
 import alexparunov.cryptomessenger.R;
 
@@ -38,18 +39,24 @@ class DecryptPresenterImpl implements DecryptPresenter, DecryptInteractorImpl.De
     if (stegoImagePath.isEmpty()) {
       mView.showToast(R.string.stego_image_not_selected);
     } else {
+      mView.showProgressDialog();
       mInteractor.performDecryption(stegoImagePath);
     }
   }
 
   @Override
-  public void onPerformDecryptionSuccess(Map map) {
-
+  public void onPerformDecryptionSuccessText(String text) {
+    mView.stopProgressDialog();
   }
 
   @Override
-  public void onPerformDecryptionFailure() {
+  public void onPerformDecryptionSuccessImage(Bitmap bitmap) {
     mView.stopProgressDialog();
-    mView.showToast(R.string.decrypt_fail);
+  }
+
+  @Override
+  public void onPerformDecryptionFailure(int message) {
+    mView.stopProgressDialog();
+    mView.showToast(message);
   }
 }

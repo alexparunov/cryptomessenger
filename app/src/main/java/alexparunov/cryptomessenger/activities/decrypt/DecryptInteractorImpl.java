@@ -6,7 +6,10 @@ import android.os.AsyncTask;
 
 import java.util.Map;
 
+import alexparunov.cryptomessenger.R;
 import alexparunov.cryptomessenger.algorithms.Extracting;
+import alexparunov.cryptomessenger.utils.Constants;
+import alexparunov.cryptomessenger.utils.HelperMethods;
 
 /**
  * Created by Alexander Parunov on 3/10/17.
@@ -25,7 +28,7 @@ class DecryptInteractorImpl implements DecryptInteractor {
     if (!path.isEmpty()) {
       new ExtractSecretMessage(path).execute();
     } else {
-      mListener.onPerformDecryptionFailure();
+      mListener.onPerformDecryptionFailure(R.string.decrypt_fail);
     }
   }
 
@@ -68,17 +71,35 @@ class DecryptInteractorImpl implements DecryptInteractor {
     @Override
     protected void onPostExecute(Map map) {
       if (map != null) {
-        mListener.onPerformDecryptionSuccess(map);
+        int type = (int) map.get(Constants.MESSAGE_TYPE);
+        if (type == Constants.TYPE_TEXT) {
+          String bits = (String) map.get(Constants.MESSAGE_BITS);
+          byte[] messageBytes = HelperMethods.bitsStreamToByteArray(bits);
+          String message = new String(messageBytes);
+          mListener.onPerformDecryptionSuccessText(message);
+
+        } else if (type == Constants.TYPE_IMAGE) {
+
+          String bits = (String) map.get(Constants.MESSAGE_BITS);
+          byte[] imageBytes = HelperMethods.bitsStreamToByteArray(bits);
+          Bitmap bitmap = HelperMethods.byteArrayToBitmap(imageBytes);
+          mListener.onPerformDecryptionSuccessImage(bitmap);
+
+        } else if (type == Constants.TYPE_UNDEFINED) {
+          mListener.onPerformDecryptionFailure(R.string.non_stego_image_selected);
+        }
       } else {
-        mListener.onPerformDecryptionFailure();
+        mListener.onPerformDecryptionFailure(R.string.decrypt_fail);
       }
     }
   }
 
   interface DecryptInteractorListener {
 
-    void onPerformDecryptionSuccess(Map map);
+    void onPerformDecryptionSuccessText(String text);
 
-    void onPerformDecryptionFailure();
+    void onPerformDecryptionSuccessImage(Bitmap bitmap);
+
+    void onPerformDecryptionFailure(int message);
   }
 }

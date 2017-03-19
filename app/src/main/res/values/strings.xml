@@ -30,4 +30,5 @@
   <string name="secret_image_empty">Please, select secret image</string>
   <string name="secret_message_long">Secret message is too long</string>
   <string name="stego_image_not_selected">Stego Image is not selected !</string>
+  <string name="non_stego_image_selected">Selected Image was not a proper Stego Image</string>
 </resources>
