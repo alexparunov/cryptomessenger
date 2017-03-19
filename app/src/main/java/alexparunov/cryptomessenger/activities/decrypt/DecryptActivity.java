@@ -120,7 +120,9 @@ public class DecryptActivity extends AppCompatActivity implements DecryptView {
       if (requestCode == Constants.SELECT_FILE) {
         Uri selectedImageUri = data.getData();
         String tempPath = getPath(selectedImageUri, DecryptActivity.this);
-        mPresenter.selectImage(tempPath);
+        if(tempPath != null) {
+          mPresenter.selectImage(tempPath);
+        }
       }
     }
   }

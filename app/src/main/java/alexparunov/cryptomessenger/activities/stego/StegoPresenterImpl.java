@@ -35,8 +35,4 @@ class StegoPresenterImpl implements StegoPresenter {
     return true;
   }
 
-  @Override
-  public void shareStegoImage(String stegoPath) {
-
-  }
 }

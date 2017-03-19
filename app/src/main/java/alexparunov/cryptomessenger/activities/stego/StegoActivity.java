@@ -6,6 +6,7 @@ package alexparunov.cryptomessenger.activities.stego;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -41,7 +42,7 @@ public class StegoActivity extends AppCompatActivity implements StegoView {
         }
         break;
       case R.id.bStegoShare:
-        mPresenter.shareStegoImage(stegoImagePath);
+        shareStegoImage(stegoImagePath);
         break;
     }
   }
@@ -121,5 +122,16 @@ public class StegoActivity extends AppCompatActivity implements StegoView {
   @Override
   public void saveToMedia(Intent intent) {
     sendBroadcast(intent);
+  }
+
+  @Override
+  public void shareStegoImage(String path) {
+    if(stegoImagePath != null) {
+      Intent share = new Intent(Intent.ACTION_SEND);
+      share.setType("image/jpeg");
+      Uri imageURI = Uri.fromFile(new File(path));
+      share.putExtra(Intent.EXTRA_STREAM, imageURI);
+      startActivity(Intent.createChooser(share, "Share using..."));
+    }
   }
 }

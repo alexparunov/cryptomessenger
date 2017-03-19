@@ -8,6 +8,4 @@ interface StegoPresenter {
 
   boolean saveStegoImage(String stegoPath);
 
-  void shareStegoImage(String stegoPath);
-
 }
