@@ -18,19 +18,23 @@
       android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
   </android.support.v7.widget.Toolbar>
 
-
-  <Button
+  <android.support.v7.widget.AppCompatButton
       android:text="@string/b_secret_text_encrypt"
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content" android:layout_alignParentTop="true"
-      android:layout_centerHorizontal="true" android:layout_marginTop="178dp"
-      android:id="@+id/bAMEncrypt"/>
+      android:layout_height="wrap_content"
+      android:textColor="@color/colorPrimaryWhite"
+      app:backgroundTint="@color/colorBlueGreySecondary"
+      android:id="@+id/bAMEncrypt"
+      android:layout_below="@+id/toolbar" android:layout_centerHorizontal="true"
+      android:layout_marginTop="171dp"/>
 
-  <Button
+  <android.support.v7.widget.AppCompatButton
       android:text="@string/b_secret_text_decrypt"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginTop="12dp" android:id="@+id/bAMDecrypt"
-      android:layout_below="@+id/bAMEncrypt" android:layout_alignLeft="@+id/bAMEncrypt"
-      android:layout_alignStart="@+id/bAMEncrypt"/>
+      android:id="@+id/bAMDecrypt"
+      android:textColor="@color/colorPrimaryWhite"
+      app:backgroundTint="@color/colorBlueGreySecondary"
+      android:layout_marginTop="21dp"
+      android:layout_below="@+id/bAMEncrypt" android:layout_alignEnd="@+id/bAMEncrypt"/>
 </RelativeLayout>

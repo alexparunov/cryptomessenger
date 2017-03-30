@@ -14,5 +14,5 @@
   <dimen name="stego_image_square">300dp</dimen>
 
   <!--Activity dimensions-->
-  <dimen name="activity_stego_top_padding">50dp</dimen>
+  <dimen name="activity_stego_top_padding">10dp</dimen>
 </resources>

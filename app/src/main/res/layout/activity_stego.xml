@@ -27,9 +27,11 @@
     <TextView
         android:text="@string/stego_image_title"
         android:textSize="@dimen/big_text_dim"
+        android:textColor="@color/colorPrimaryBlack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:paddingBottom="5dp"
         android:id="@+id/textView"/>
     <ImageView
         android:layout_width="@dimen/stego_image_square"
@@ -38,20 +40,25 @@
         android:contentDescription="@string/stego_image_title"
         android:id="@+id/ivStegoImage"
         android:scaleType="centerCrop"
+        android:paddingBottom="5dp"
         android:adjustViewBounds="false"/>
 
-    <Button
+    <android.support.v7.widget.AppCompatButton
         android:text="@string/b_stego_image_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:textColor="@color/colorPrimaryWhite"
+        app:backgroundTint="@color/colorBlueGreySecondary"
         android:id="@+id/bStegoSave"/>
 
-    <Button
+    <android.support.v7.widget.AppCompatButton
         android:text="@string/b_stego_image_share"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:textColor="@color/colorPrimaryWhite"
+        app:backgroundTint="@color/colorBlueGreySecondary"
         android:id="@+id/bStegoShare"/>
   </LinearLayout>
 

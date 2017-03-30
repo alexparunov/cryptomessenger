@@ -85,6 +85,7 @@ public class DecryptActivity extends AppCompatActivity implements DecryptView {
     ActionBar actionBar = getSupportActionBar();
     if (actionBar != null) {
       actionBar.setDisplayHomeAsUpEnabled(true);
+      actionBar.setTitle("Decryption");
     }
   }
 

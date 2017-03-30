@@ -28,13 +28,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimaryBlack"
         android:text="@string/select_image_title"
         android:textSize="@dimen/medium_text_dim"
         android:layout_gravity="center"/>
 
     <ImageView
-        android:layout_width="@dimen/medium_image_square"
-        android:layout_height="@dimen/medium_image_square"
+        android:layout_width="@dimen/large_image_square"
+        android:layout_height="@dimen/large_image_square"
         android:layout_gravity="center"
         app:srcCompat="@mipmap/ic_launcher"
         android:contentDescription="@string/select_image_title"
@@ -45,6 +46,7 @@
         android:layout_height="wrap_content"
         android:text="@string/secret_message_title"
         android:textSize="@dimen/medium_text_dim"
+        android:textColor="@color/colorPrimaryBlack"
         android:layout_gravity="center"/>
 
     <RadioGroup
@@ -75,18 +77,20 @@
         android:id="@+id/etSecretMessage"/>
 
     <ImageView
-        android:layout_width="@dimen/medium_image_square"
-        android:layout_height="@dimen/medium_image_square"
+        android:layout_width="@dimen/large_image_square"
+        android:layout_height="@dimen/large_image_square"
         android:layout_gravity="center"
         app:srcCompat="@mipmap/ic_launcher"
         android:id="@+id/ivSecretImage"
         android:visibility="gone"/>
 
-    <Button
+    <android.support.v7.widget.AppCompatButton
         android:text="@string/b_secret_text_encrypt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:textColor="@color/colorPrimaryWhite"
+        app:backgroundTint="@color/colorBlueGreySecondary"
         android:id="@+id/bEncrypt"/>
 
   </LinearLayout>

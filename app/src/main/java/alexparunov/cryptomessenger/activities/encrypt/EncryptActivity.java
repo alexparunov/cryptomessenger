@@ -164,6 +164,7 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
     ActionBar actionBar = getSupportActionBar();
     if (actionBar != null) {
       actionBar.setDisplayHomeAsUpEnabled(true);
+      actionBar.setTitle("Encryption");
     }
   }
 
