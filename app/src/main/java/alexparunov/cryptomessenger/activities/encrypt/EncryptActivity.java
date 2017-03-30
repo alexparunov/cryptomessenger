@@ -254,6 +254,7 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
       .placeholder(R.mipmap.ic_launcher)
       .into(ivCoverImage);
     stopProgressDialog();
+    whichImage = -1;
   }
 
   @Override
@@ -270,6 +271,7 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
       .placeholder(R.mipmap.ic_launcher)
       .into(ivSecretImage);
     stopProgressDialog();
+    whichImage = -1;
   }
 
   @Override
