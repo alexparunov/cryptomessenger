@@ -1,5 +1,6 @@
 package alexparunov.cryptomessenger.activities.encrypt;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
@@ -31,7 +32,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
   public void selectImage(int whichImage, String tempPath) {
     mView.showProgressDialog();
 
-    int IMAGE_SIZE = 1000;
+    int IMAGE_SIZE = 1500;
 
     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
     bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
@@ -41,9 +42,10 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     bitmap = ThumbnailUtils.extractThumbnail(bitmap, dimension, dimension);
 
     //We want to be able to hide secret image in cover image, so size should be less
-    //200x200 image
+    //400x400 image
     if (whichImage == Constants.SECRET_IMAGE) {
-      IMAGE_SIZE  = IMAGE_SIZE/3 - 133;
+      IMAGE_SIZE = 150 + IMAGE_SIZE / 6;
+
     }
 
     Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, IMAGE_SIZE, IMAGE_SIZE, false);
@@ -73,7 +75,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
   public void selectImageCamera(int whichImage) {
     mView.showProgressDialog();
 
-    int IMAGE_SIZE = 1000;
+    int IMAGE_SIZE = 1500;
 
     File file = new File(Environment.getExternalStorageDirectory().toString());
     for (File temp : file.listFiles()) {
@@ -92,9 +94,9 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     bitmap = ThumbnailUtils.extractThumbnail(bitmap, dimension, dimension);
 
     //We want to be able to hide secret image in cover image, so size should be less
-    //200x200 image
+    //40x400 image
     if (whichImage == Constants.SECRET_IMAGE) {
-      IMAGE_SIZE  = IMAGE_SIZE/3 - 133;
+      IMAGE_SIZE = 150 + IMAGE_SIZE / 6;
     }
 
     Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, IMAGE_SIZE, IMAGE_SIZE, false);
@@ -155,10 +157,19 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
 
   @Override
   public void encryptText() {
-    if (coverImage == null) {
-      mView.stopProgressDialog();
-      mView.showToast(R.string.cover_image_empty);
-      return;
+
+    SharedPreferences sp = mView.getSharedPrefs();
+    boolean isCoverSet = sp.getBoolean(Constants.PREF_COVER_IS_SET, false);
+    String filePath = sp.getString(Constants.PREF_COVER_PATH, "");
+
+    if (!isCoverSet) {
+      if (coverImage == null) {
+        mView.stopProgressDialog();
+        mView.showToast(R.string.cover_image_empty);
+        return;
+      }
+    } else {
+      coverImage = getBitmapFromPath(filePath);
     }
 
     mView.showProgressDialog();
@@ -167,11 +178,19 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
 
   @Override
   public void encryptImage() {
-    if (coverImage == null) {
-      coverImage = mView.getCoverImage();
-      mView.stopProgressDialog();
-      mView.showToast(R.string.cover_image_empty);
-      return;
+
+    SharedPreferences sp = mView.getSharedPrefs();
+    boolean isCoverSet = sp.getBoolean(Constants.PREF_COVER_IS_SET, false);
+    String filePath = sp.getString(Constants.PREF_COVER_PATH, "");
+
+    if (!isCoverSet) {
+      if (coverImage == null) {
+        mView.stopProgressDialog();
+        mView.showToast(R.string.cover_image_empty);
+        return;
+      }
+    } else {
+      coverImage = getBitmapFromPath(filePath);
     }
 
     if (secretImage == null) {
@@ -208,12 +227,12 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
 
     if (!folder.exists()) {
       if (folder.mkdirs()) {
-        file = new File(path,"SI_"+System.currentTimeMillis() + ".png");
+        file = new File(path, "SI_" + System.currentTimeMillis() + ".png");
       } else {
         showParsingImageError();
       }
     } else {
-      file = new File(path,"SI_"+System.currentTimeMillis() + ".png");
+      file = new File(path, "SI_" + System.currentTimeMillis() + ".png");
     }
 
     if (file != null) {
@@ -234,5 +253,22 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     }
 
     return filePath;
+  }
+
+  private Bitmap getBitmapFromPath(String path) {
+
+    int IMAGE_SIZE = 1500;
+
+    BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+    bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
+    Bitmap bitmap = BitmapFactory.decodeFile(path, bitmapOptions);
+
+    int dimension = Math.min(bitmap.getWidth(), bitmap.getHeight());
+    bitmap = ThumbnailUtils.extractThumbnail(bitmap, dimension, dimension);
+
+    Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, IMAGE_SIZE, IMAGE_SIZE, false);
+    scaledBitmap.setPremultiplied(false);
+
+    return scaledBitmap;
   }
 }

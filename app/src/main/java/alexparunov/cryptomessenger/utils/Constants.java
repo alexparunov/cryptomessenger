@@ -15,8 +15,9 @@ public class Constants {
   public static final int SECRET_IMAGE = 1;
 
   //SharedPreferences
-  public static final String SHARED_PREF_NAME = "CryptoMessengerSP";
-  public static final String PREF_COVER = "coverImagePref";
+  public static final String SHARED_PREF_NAME = "cryptomessenger_spref";
+  public static final String PREF_COVER_PATH = "cover_image_pref";
+  public static final String PREF_COVER_IS_SET = "cover_is_set_pref";
 
   //Stego Image Map Keys
   public static final String MESSAGE_TYPE = "message_type";

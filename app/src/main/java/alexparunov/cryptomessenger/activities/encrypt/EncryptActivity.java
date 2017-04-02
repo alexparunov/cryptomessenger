@@ -154,6 +154,14 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
     progressDialog.setMessage("Please wait...");
 
     mPresenter = new EncryptPresenterImpl(this);
+
+    SharedPreferences sp = getSharedPrefs();
+    String filePath = sp.getString(Constants.PREF_COVER_PATH, "");
+    boolean isCoverSet = sp.getBoolean(Constants.PREF_COVER_IS_SET, false);
+
+    if(isCoverSet) {
+      setCoverImage(new File(filePath));
+    }
   }
 
   @Override
@@ -256,6 +264,11 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
       .into(ivCoverImage);
     stopProgressDialog();
     whichImage = -1;
+
+    SharedPreferences.Editor editor = getSharedPrefs().edit();
+    editor.putString(Constants.PREF_COVER_PATH, file.getAbsolutePath());
+    editor.putBoolean(Constants.PREF_COVER_IS_SET, true);
+    editor.apply();
   }
 
   @Override
