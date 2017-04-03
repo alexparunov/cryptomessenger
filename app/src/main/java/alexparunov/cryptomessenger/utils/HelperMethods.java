@@ -5,6 +5,7 @@ import com.google.common.collect.Iterables;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.Charset;
@@ -25,18 +26,21 @@ public class HelperMethods {
     return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
   }
 
+  @NonNull
   public static String bitmapToBinaryStream(Bitmap bitmap) {
     byte[] bitmapInBytes = bitmapToByteArray(bitmap);
 
     return byteArrayToBitsStream(bitmapInBytes);
   }
 
+  @NonNull
   public static String stringToBinaryStream(String string) {
     byte[] stringInBytes = string.getBytes(Charset.forName("UTF-8"));
 
     return byteArrayToBitsStream(stringInBytes);
   }
 
+  @NonNull
   private static String byteArrayToBitsStream(byte[] array) {
     StringBuilder binary = new StringBuilder();
 
@@ -55,8 +59,8 @@ public class HelperMethods {
     byte[] resultBytes = new byte[Iterables.size(iterable)];
     Iterator iterator = iterable.iterator();
     int i = 0;
-    while(iterator.hasNext()) {
-      Integer byteAsInt = Integer.parseInt(iterator.next().toString(),2);
+    while (iterator.hasNext()) {
+      Integer byteAsInt = Integer.parseInt(iterator.next().toString(), 2);
       resultBytes[i] = byteAsInt.byteValue();
       i++;
     }

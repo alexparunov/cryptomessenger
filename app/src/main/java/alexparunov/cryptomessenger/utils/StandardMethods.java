@@ -11,6 +11,6 @@ public class StandardMethods {
   }
 
   public static void showLog(String tag, Object message) {
-    Log.d(tag,String.valueOf(message));
+    Log.d(tag, String.valueOf(message));
   }
 }

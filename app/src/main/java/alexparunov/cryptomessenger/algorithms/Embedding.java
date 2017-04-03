@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
 
+import org.jetbrains.annotations.Contract;
+
 import java.util.Random;
 
 import alexparunov.cryptomessenger.utils.Constants;
@@ -12,6 +14,28 @@ import alexparunov.cryptomessenger.utils.StandardMethods;
 
 public class Embedding {
 
+  /**
+   * Embeds secret image inside the cover image in the following way:
+   * 1) Copy the entire cover image as ARGB_8888 with pre-multiplied feature = false
+   * 2) Convert secret image into stream of bits stored as String
+   * 3) Check if this stream of bits can be fit inside the cover image, return null otherwise
+   * 4) Generate 24 bit random key represented as integer array of length 24 and store in (0,0)th pixel
+   * 5) Set flag that indicates the type of secret message (image) in (0,1)th pixel of stego image
+   * 6) Perform embedding of secret message stream of bits in the following way:
+   *      i) Initialize 2 nested for-loops in respective interval [0 <= x <= width],[2 <= y <= height]
+   *      ii) Select each pixel of stego image from (x,y) coordinates
+   *      iii) Extract Red, Green, Blue colors from each pixel and store in integer array
+   *      iv) Store 1 bit of secret image in each of the colors. Decision of which color to choose
+   *          is conducted by xor operation of one bit of random key and 2nd LSB of stego image.
+   *          If xor equals to 1 then we store that bit, otherwise we skip the color.
+   *      v) Update the pixel at (x,y) with above mutated RGB colors
+   *      iv) Repeat above given steps until the whole secret image as stream of bits is embedded
+   * 7) Set flag which indicates the end of secret image in (x',y')th pixel,
+   *    where x' and 'y are coordinates of next to the last mutated pixel
+   * @param coverImage is a Bitmap image which is used to store secret image in
+   * @param secretImage is a Bitmap image which is stored inside cover image
+   * @return Stego image as Bitmap, whose pixels are mutated in step 6)
+   */
   @Nullable
   public static Bitmap embedSecretImage(Bitmap coverImage, Bitmap secretImage) {
 
@@ -70,7 +94,7 @@ public class Embedding {
     stegoImage.setPixel(0, 0, Color.rgb(red_sum, green_sum, blue_sum));
     StandardMethods.showLog("EMB", "Key1: " + red_sum + " " + green_sum + " " + blue_sum);
 
-    //To check if secret message is image. (0,0,COLOR_RGB_IMAGE)
+    //To check if secret message is image. (0,1,COLOR_RGB_IMAGE)
     stegoImage.setPixel(0, 1, Constants.COLOR_RGB_IMAGE);
 
     int endX = 0, endY = 2;
@@ -117,12 +141,34 @@ public class Embedding {
       }
     }
 
-    //End of secret message flag. (0,0,COLOR_RGB_END)
+    //End of secret message flag. (0,2,COLOR_RGB_END)
     stegoImage.setPixel(endX, endY, Constants.COLOR_RGB_END);
 
     return stegoImage;
   }
 
+  /**
+   * Embeds secret text inside the cover image in the following way:
+   * 1) Copy the entire cover image as ARGB_8888 with pre-multiplied feature = false
+   * 2) Convert secret text into stream of bits stored as String
+   * 3) Check if this stream of bits can be fit inside the cover image, return null otherwise
+   * 4) Generate 24 bit random key represented as integer array of length 24 and store in (0,0)th pixel
+   * 5) Set flag that indicates the type of secret message (text) in (0,1)th pixel of stego image
+   * 6) Perform embedding of secret message stream of bits in the following way:
+   *      i) Initialize 2 nested for-loops in respective interval [0 <= x <= width],[2 <= y <= height]
+   *      ii) Select each pixel of stego image from (x,y) coordinates
+   *      iii) Extract Red, Green, Blue colors from each pixel and store in integer array
+   *      iv) Store 1 bit of secret text in each of the colors. Decision of which color to choose
+   *          is conducted by xor operation of one bit of random key and 2nd LSB of stego image.
+   *          If xor equals to 1 then we store that bit, otherwise we skip the color.
+   *      v)  Update the pixel of stego image at (x,y) with above mutated RGB colors
+   *      iv) Repeat above given steps until the whole secret text as stream of bits is embedded
+   * 7) Set flag which indicates the end of secret text in (x',y')th pixel,
+   *    where x' and 'y are coordinates of next to the last mutated pixel
+   * @param coverImage is a Bitmap image which is used to store secret image in
+   * @param secretText is a String text which is stored inside cover image
+   * @return Stego image as Bitmap, whose pixels are mutated in step 6)
+   */
   @Nullable
   public static Bitmap embedSecretText(String secretText, Bitmap coverImage) {
 
@@ -130,9 +176,6 @@ public class Embedding {
     stegoImage.setPremultiplied(false);
 
     String sTextInBin = HelperMethods.stringToBinaryStream(secretText);
-
-    StandardMethods.showLog("EMB", "Initial Message: " + sTextInBin);
-    StandardMethods.showLog("EMB", "Initial Message Length: " + sTextInBin.length());
 
     int secretMessageLen = sTextInBin.length();
     int action, embMesPos = 0, keyPos = 0;
@@ -179,7 +222,7 @@ public class Embedding {
       blue_sum += temp_number;
     }
 
-    //Update (0,0) pixel with RGB_888 as for key values
+    //Update (0,1) pixel with RGB_888 as for key values
     stegoImage.setPixel(0, 0, Color.rgb(red_sum, green_sum, blue_sum));
     StandardMethods.showLog("EMB", "Key1: " + red_sum + " " + green_sum + " " + blue_sum);
 
@@ -230,20 +273,40 @@ public class Embedding {
       }
     }
 
-    //End of secret message flag. (0,0,COLOR_RGB_END)
+    //End of secret message flag. (0,2,COLOR_RGB_END)
     stegoImage.setPixel(endX, endY, Constants.COLOR_RGB_END);
 
     return stegoImage;
   }
 
+  /**
+   * @param number is either Red, Green, or Blue presented as integer (0-255)
+   * @return least significant bit, i.e. the left-most
+   */
+  @Contract(pure = true)
   private static int LSB(int number) {
     return number & 1;
   }
 
+  /**
+   * @param number is either Red, Green, or Blue presented as integer (0-255)
+   * @return second least significant bit, i.e. second to the left-most
+   */
+  @Contract(pure = true)
   private static int LSB2(int number) {
     return (number >> 1) & 1;
   }
 
+  /**
+   * Determines correct action which should be performed on Red/Green/Blue color
+   * If LSB is 1 and bit is 0, we need to subtract 1 to make LSB 0
+   * Else if LSB is 0 and bit is 1, we need to add 1 to make LSB 1
+   * Otherwise we do not perform any action, since LSB is the same as bit
+   *
+   * @param color is either Red, Green, or Blue presented as integer (0-255)
+   * @param bit   is bit of secret message which should be hidden
+   * @return a correct integer which is used in mutation of color +1, -1, or 0
+   */
   private static int action(int color, char bit) {
     if (LSB(color) == 1 && bit == '0') {
       return -1;
@@ -254,6 +317,11 @@ public class Embedding {
     }
   }
 
+  /**
+   * Generates random 24 bit key
+   *
+   * @return integer array of length 24 consisting of random stream of bits
+   */
   private static int[] generateKey() {
     final int[] bits = {0, 1};
     int[] result = new int[24];
