@@ -49,7 +49,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     }
 
     Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, IMAGE_SIZE, IMAGE_SIZE, false);
-    //Needs to be false so that set pixels are not pre-multiplied by alpha value
+    //Should be false so that set pixels are not pre-multiplied by alpha value
     scaledBitmap.setPremultiplied(false);
 
     String path = Environment.getExternalStorageDirectory() + File.separator + "CryptoMessenger";
@@ -102,7 +102,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
 
     Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, IMAGE_SIZE, IMAGE_SIZE, false);
 
-    //Needs to be false so that set pixels are not pre-multiplied by alpha value
+    //Should be false so that set pixels are not pre-multiplied by alpha value
     scaledBitmap.setPremultiplied(false);
 
     String path = Environment.getExternalStorageDirectory() + File.separator + "CryptoMessenger";
@@ -278,7 +278,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
 
     Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, IMAGE_SIZE, IMAGE_SIZE, false);
 
-    //Needs to be false so that set pixels are not pre-multiplied by alpha value
+    //Should be false so that set pixels are not pre-multiplied by alpha value
     scaledBitmap.setPremultiplied(false);
 
     return scaledBitmap;

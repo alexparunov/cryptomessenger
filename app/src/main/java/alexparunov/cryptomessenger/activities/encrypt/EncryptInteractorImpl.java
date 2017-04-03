@@ -24,6 +24,9 @@ class EncryptInteractorImpl implements EncryptInteractor {
     }
   }
 
+  /**
+   * AsyncTask which embeds secret message in the background not to block main frame
+   */
   private class EmbedSecretMessage extends AsyncTask<Void, Void, Bitmap> {
     String message;
     Bitmap coverImage, secretImage;
@@ -66,7 +69,7 @@ class EncryptInteractorImpl implements EncryptInteractor {
 
     /**
      * Listener which is invoked after successfully performed steganography
-     * @param stegoImage Bitmap which is the result image of steganography method
+     * @param stegoImage Bitmap which is the result image of steganography
      */
     void onPerformSteganographySuccessful(Bitmap stegoImage);
 

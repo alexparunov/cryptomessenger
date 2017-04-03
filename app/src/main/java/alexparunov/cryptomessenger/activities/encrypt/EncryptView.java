@@ -66,7 +66,7 @@ interface EncryptView {
   void showProgressDialog();
 
   /**
-   * Stops progress dialog
+   * Dismisses progress dialog
    */
   void stopProgressDialog();
 
@@ -76,7 +76,7 @@ interface EncryptView {
   void openCamera();
 
   /**
-   * Opens media chooser activity
+   * Opens media chooser
    */
   void chooseImage();
 

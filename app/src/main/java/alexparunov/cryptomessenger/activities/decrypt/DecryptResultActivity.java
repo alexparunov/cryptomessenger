@@ -1,9 +1,9 @@
 package alexparunov.cryptomessenger.activities.decrypt;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,7 +15,6 @@ import java.io.File;
 
 import alexparunov.cryptomessenger.R;
 import alexparunov.cryptomessenger.utils.Constants;
-import alexparunov.cryptomessenger.utils.StandardMethods;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -42,15 +41,15 @@ public class DecryptResultActivity extends AppCompatActivity {
 
     Intent intent = getIntent();
 
-    if(intent != null) {
+    if (intent != null) {
       Bundle bundle = intent.getExtras();
       secretMessage = bundle.getString(Constants.EXTRA_SECRET_TEXT_RESULT);
       secretImagePath = bundle.getString(Constants.EXTRA_SECRET_IMAGE_RESULT);
     }
 
-    if(secretMessage != null) {
+    if (secretMessage != null) {
       tvSecretMessage.setText(secretMessage);
-    } else if(secretImagePath != null) {
+    } else if (secretImagePath != null) {
       ivSecretImage.setVisibility(View.VISIBLE);
       setSecretImage(secretImagePath);
     }
