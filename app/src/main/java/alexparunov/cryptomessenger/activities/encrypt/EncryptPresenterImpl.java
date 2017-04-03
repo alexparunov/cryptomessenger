@@ -35,7 +35,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     int IMAGE_SIZE = 1500;
 
     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-    bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
+    bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888; //Image is stored as ARGB_8888
     Bitmap bitmap = BitmapFactory.decodeFile(tempPath, bitmapOptions);
 
     int dimension = Math.min(bitmap.getWidth(), bitmap.getHeight());
@@ -49,6 +49,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     }
 
     Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, IMAGE_SIZE, IMAGE_SIZE, false);
+    //Needs to be false so that set pixels are not pre-multiplied by alpha value
     scaledBitmap.setPremultiplied(false);
 
     String path = Environment.getExternalStorageDirectory() + File.separator + "CryptoMessenger";
@@ -86,7 +87,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     }
 
     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-    bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
+    bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888; //Image is stored as ARGB_8888
     Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), bitmapOptions);
     file.delete();
 
@@ -94,12 +95,14 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     bitmap = ThumbnailUtils.extractThumbnail(bitmap, dimension, dimension);
 
     //We want to be able to hide secret image in cover image, so size should be less
-    //40x400 image
+    //400x400 image
     if (whichImage == Constants.SECRET_IMAGE) {
       IMAGE_SIZE = 150 + IMAGE_SIZE / 6;
     }
 
     Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, IMAGE_SIZE, IMAGE_SIZE, false);
+
+    //Needs to be false so that set pixels are not pre-multiplied by alpha value
     scaledBitmap.setPremultiplied(false);
 
     String path = Environment.getExternalStorageDirectory() + File.separator + "CryptoMessenger";
@@ -128,6 +131,11 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
 
   }
 
+  /**
+   * Compresses the file and stores in Internal Memory
+   * @param file Image in File format
+   * @param bitmap Image in Bitmap format
+   */
   private void compressFile(File file, Bitmap bitmap) {
     try {
       OutputStream outputStream = new FileOutputStream(file);
@@ -169,6 +177,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
         return;
       }
     } else {
+      //Case when image path is extracted from SharedPreferences
       coverImage = getBitmapFromPath(filePath);
     }
 
@@ -190,6 +199,7 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
         return;
       }
     } else {
+      //Case when image path is extracted from SharedPreferences
       coverImage = getBitmapFromPath(filePath);
     }
 
@@ -260,13 +270,15 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     int IMAGE_SIZE = 1500;
 
     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-    bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
+    bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888; //image is stored as ARGB_8888
     Bitmap bitmap = BitmapFactory.decodeFile(path, bitmapOptions);
 
     int dimension = Math.min(bitmap.getWidth(), bitmap.getHeight());
     bitmap = ThumbnailUtils.extractThumbnail(bitmap, dimension, dimension);
 
     Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, IMAGE_SIZE, IMAGE_SIZE, false);
+
+    //Needs to be false so that set pixels are not pre-multiplied by alpha value
     scaledBitmap.setPremultiplied(false);
 
     return scaledBitmap;

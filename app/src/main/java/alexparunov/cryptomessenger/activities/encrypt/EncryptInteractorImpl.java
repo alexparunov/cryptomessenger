@@ -64,8 +64,15 @@ class EncryptInteractorImpl implements EncryptInteractor {
 
   interface EncryptInteractorListener {
 
+    /**
+     * Listener which is invoked after successfully performed steganography
+     * @param stegoImage Bitmap which is the result image of steganography method
+     */
     void onPerformSteganographySuccessful(Bitmap stegoImage);
 
+    /**
+     * Listener which is invoked after failure during steganography
+     */
     void onPerformSteganographyFailure();
   }
 }
