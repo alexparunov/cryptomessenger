@@ -79,11 +79,13 @@ public class Extracting {
     int tGreen = Color.green(typePixel);
     int tBlue = Color.blue(typePixel);
 
-    if (tRed == 0 && tGreen == 0 && tBlue == Constants.COLOR_RGB_TEXT) {
+    //Constants.COLOR_RGB_TEXT
+    if (tRed == 135 && tGreen == 197 && tBlue == 245) {
 
       map.put(Constants.MESSAGE_TYPE, Constants.TYPE_TEXT);
 
-    } else if (tRed == 0 && tGreen == 0 && tBlue == Constants.COLOR_RGB_IMAGE) {
+    //Constants.COLOR_RGB_IMAGE
+    } else if (tRed == 255 && tGreen == 105 && tBlue == 180) {
 
       map.put(Constants.MESSAGE_TYPE, Constants.TYPE_IMAGE);
 
@@ -105,7 +107,8 @@ public class Extracting {
 
         int colors[] = {Color.red(pixel), Color.green(pixel), Color.blue(pixel)};
 
-        if (colors[0] == 0 && colors[1] == 0 && colors[2] == Constants.COLOR_RGB_END) {
+        //Colors.COLOR_RGB_END
+        if (colors[0] == 96 && colors[1] == 62 && colors[2] == 148) {
           break outerloop;
         } else {
 

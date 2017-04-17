@@ -1,5 +1,7 @@
 package alexparunov.cryptomessenger.utils;
 
+import android.graphics.Color;
+
 public class Constants {
 
   // Permissions
@@ -33,10 +35,9 @@ public class Constants {
   public static final String EXTRA_SECRET_TEXT_RESULT = "secret_text_result";
   public static final String EXTRA_SECRET_IMAGE_RESULT = "secret_image_result";
 
-  //Colors for Stego Image
-  public static final int COLOR_RGB_END = 1;
-  public static final int COLOR_RGB_TEXT = 2;
-  public static final int COLOR_RGB_IMAGE = 3;
-
+  //Colors for Stego Image. They are the most rare colors in nature
+  public static final int COLOR_RGB_END = Color.rgb(96, 62, 148); //Saint's Row Purple
+  public static final int COLOR_RGB_TEXT = Color.rgb(135, 197, 245); //Killfom (Baby Blue)
+  public static final int COLOR_RGB_IMAGE = Color.rgb(255, 105, 180); //Hot pink
 
 }

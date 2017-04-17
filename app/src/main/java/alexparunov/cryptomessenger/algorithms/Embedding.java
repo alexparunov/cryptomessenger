@@ -92,7 +92,6 @@ public class Embedding {
 
     //Update (0,0) pixel with RGB_888 as for key values
     stegoImage.setPixel(0, 0, Color.rgb(red_sum, green_sum, blue_sum));
-    StandardMethods.showLog("EMB", "Key1: " + red_sum + " " + green_sum + " " + blue_sum);
 
     //To check if secret message is image. (0,1,COLOR_RGB_IMAGE)
     stegoImage.setPixel(0, 1, Constants.COLOR_RGB_IMAGE);
