@@ -132,7 +132,13 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
     if (secretMessageType == Constants.TYPE_IMAGE) {
       mPresenter.encryptImage();
     } else if (secretMessageType == Constants.TYPE_TEXT) {
-      mPresenter.encryptText();
+      String text = getSecretMessage();
+
+      if (!text.isEmpty()) {
+        mPresenter.encryptText();
+      } else {
+        showToast(R.string.secret_text_empty);
+      }
     }
   }
 
@@ -159,7 +165,7 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
     String filePath = sp.getString(Constants.PREF_COVER_PATH, "");
     boolean isCoverSet = sp.getBoolean(Constants.PREF_COVER_IS_SET, false);
 
-    if(isCoverSet) {
+    if (isCoverSet) {
       setCoverImage(new File(filePath));
     }
   }
