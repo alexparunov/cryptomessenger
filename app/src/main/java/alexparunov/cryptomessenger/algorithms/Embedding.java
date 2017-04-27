@@ -19,8 +19,8 @@ public class Embedding {
    * 1) Copy the entire cover image as ARGB_8888 with pre-multiplied feature = false
    * 2) Convert secret image into stream of bits stored as String
    * 3) Check if this stream of bits can be fit inside the cover image, return null otherwise
-   * 4) Generate 24 bit random key represented as integer array of length 24 and store in (0,0)th pixel
-   * 5) Set flag that indicates the type of secret message (image) in (0,1)th pixel of stego image
+   * 4) Generate 24 bit random key represented as integer array of length 24 and store in (0,0)-th pixel
+   * 5) Set flag that indicates the type of secret message (image) in (0,1)-th pixel of stego image
    * 6) Perform embedding of secret message stream of bits in the following way:
    *      i) Initialize 2 nested for-loops in respective interval [0 <= x <= width],[2 <= y <= height]
    *      ii) Select each pixel of stego image from (x,y) coordinates

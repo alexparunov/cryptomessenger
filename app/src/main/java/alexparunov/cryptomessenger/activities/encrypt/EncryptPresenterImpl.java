@@ -178,7 +178,11 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
       }
     } else {
       //Case when image path is extracted from SharedPreferences
-      coverImage = getBitmapFromPath(filePath);
+      if(!filePath.isEmpty()) {
+        coverImage = getBitmapFromPath(filePath);
+      } else {
+        mView.showToast(R.string.cover_image_empty);
+      }
     }
 
     mView.showProgressDialog();
@@ -200,7 +204,11 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
       }
     } else {
       //Case when image path is extracted from SharedPreferences
-      coverImage = getBitmapFromPath(filePath);
+      if(!filePath.isEmpty()) {
+        coverImage = getBitmapFromPath(filePath);
+      } else {
+        mView.showToast(R.string.cover_image_empty);
+      }
     }
 
     if (secretImage == null) {
@@ -272,7 +280,6 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
     bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888; //image is stored as ARGB_8888
     Bitmap bitmap = BitmapFactory.decodeFile(path, bitmapOptions);
-
     int dimension = Math.min(bitmap.getWidth(), bitmap.getHeight());
     bitmap = ThumbnailUtils.extractThumbnail(bitmap, dimension, dimension);
 
