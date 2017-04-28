@@ -135,4 +135,15 @@ public class StegoActivity extends AppCompatActivity implements StegoView {
       startActivity(Intent.createChooser(share, "Share using..."));
     }
   }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+
+    if(!isSaved) {
+      if(stegoImagePath != null) {
+        new File(stegoImagePath).delete();
+      }
+    }
+  }
 }

@@ -143,12 +143,22 @@ class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.En
       outputStream.flush();
       outputStream.close();
 
+      SharedPreferences sp = mView.getSharedPrefs();
+      boolean isCoverSet = sp.getBoolean(Constants.PREF_COVER_IS_SET, false);
+      String filePath = sp.getString(Constants.PREF_COVER_PATH, "");
+
       if (whichImage == Constants.COVER_IMAGE) {
         this.coverImage = bitmap;
+        if(isCoverSet) {
+          if(!filePath.isEmpty()) {
+            new File(filePath).delete();
+          }
+        }
         mView.setCoverImage(file);
       } else if (whichImage == Constants.SECRET_IMAGE) {
         this.secretImage = bitmap;
         mView.setSecretImage(file);
+        file.delete();
       } else {
         showParsingImageError();
       }
