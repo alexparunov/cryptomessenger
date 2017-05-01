@@ -19,18 +19,18 @@
   <string name="choose_image">Choose Image</string>
 
   <!--Messages-->
-  <string name="encrypted_success">Message is successfully encrypted !</string>
+  <string name="encrypted_success">Message is successfully encrypted</string>
   <string name="encrypted_fail">Failure during message encryption</string>
   <string name="decrypt_success">Message is successfully decrypted</string>
-  <string name="decrypt_fail">Failure during message decryption</string>
+  <string name="decrypt_fail">Failure during message decryption, please use another stego image.</string>
   <string name="compress_error">Failure during image compression</string>
-  <string name="save_image_success">Stego Image was successfully saved !</string>
+  <string name="save_image_success">Stego Image was successfully saved</string>
   <string name="save_image_error">Failure during image saving</string>
   <string name="cover_image_empty">Please, select cover image</string>
   <string name="image_is_saved">Stego Image is already saved on device</string>
   <string name="secret_image_empty">Please, select secret image</string>
   <string name="secret_message_long">Secret message is too long</string>
-  <string name="stego_image_not_selected">Stego Image is not selected !</string>
+  <string name="stego_image_not_selected">Stego Image is not selected</string>
   <string name="non_stego_image_selected">Selected image is not a proper Stego Image</string>
-  <string name="secret_text_empty">Text field is empty !</string>
+  <string name="secret_text_empty">Text field is empty</string>
 </resources>

@@ -85,12 +85,20 @@ class DecryptInteractorImpl implements DecryptInteractor {
          */
         if (type == Constants.TYPE_TEXT) {
           String bits = (String) map.get(Constants.MESSAGE_BITS);
+          if(bits.isEmpty()) {
+            mListener.onPerformDecryptionFailure(R.string.decrypt_fail);
+            return;
+          }
           byte[] messageBytes = HelperMethods.bitsStreamToByteArray(bits);
           String message = new String(messageBytes);
           mListener.onPerformDecryptionSuccessText(message);
         } else if (type == Constants.TYPE_IMAGE) {
 
           String bits = (String) map.get(Constants.MESSAGE_BITS);
+          if(bits.isEmpty()) {
+            mListener.onPerformDecryptionFailure(R.string.decrypt_fail);
+            return;
+          }
           byte[] imageBytes = HelperMethods.bitsStreamToByteArray(bits);
           Bitmap bitmap = HelperMethods.byteArrayToBitmap(imageBytes);
           mListener.onPerformDecryptionSuccessImage(bitmap);
