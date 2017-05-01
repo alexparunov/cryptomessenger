@@ -1,4 +1,6 @@
-package alexparunov.stegomessenger.activities.encrypt;
+package alexparunov.stegomessenger.activities_fragments.encrypt;
+
+import static android.app.Activity.RESULT_OK;
 
 import android.Manifest;
 import android.app.Activity;
@@ -16,13 +18,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -32,7 +35,7 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 
 import alexparunov.stegomessenger.R;
-import alexparunov.stegomessenger.activities.stego.StegoActivity;
+import alexparunov.stegomessenger.activities_fragments.stego.StegoActivity;
 import alexparunov.stegomessenger.utils.Constants;
 import alexparunov.stegomessenger.utils.StandardMethods;
 import butterknife.BindView;
@@ -40,7 +43,7 @@ import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
-public class EncryptActivity extends AppCompatActivity implements EncryptView {
+public class EncryptFragment extends Fragment implements EncryptView {
 
   @BindView(R.id.etSecretMessage)
   EditText etSecretMessage;
@@ -75,7 +78,7 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
       getString(R.string.select_image_dialog)
     };
 
-    AlertDialog.Builder builder = new AlertDialog.Builder(EncryptActivity.this);
+    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
     builder.setTitle(getString(R.string.select_image_title));
     builder.setCancelable(false);
     builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -83,12 +86,12 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
       public void onClick(DialogInterface dialogInterface, int item) {
         if (items[item].equals(getString(R.string.take_image_dialog))) {
 
-          if (ContextCompat.checkSelfPermission(getApplicationContext(),
+          if (ContextCompat.checkSelfPermission(getActivity(),
             Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
-            ContextCompat.checkSelfPermission(getApplicationContext(),
+            ContextCompat.checkSelfPermission(getActivity().getApplicationContext(),
               Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions(EncryptActivity.this,
+            ActivityCompat.requestPermissions(getActivity(),
               new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
               Constants.PERMISSIONS_CAMERA);
 
@@ -97,10 +100,10 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
           }
         } else if (items[item].equals(getString(R.string.select_image_dialog))) {
 
-          if (ContextCompat.checkSelfPermission(getApplicationContext(),
+          if (ContextCompat.checkSelfPermission(getActivity(),
             Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions(EncryptActivity.this,
+            ActivityCompat.requestPermissions(getActivity(),
               new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
               Constants.PERMISSIONS_EXTERNAL_STORAGE);
 
@@ -148,18 +151,28 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
   private int secretMessageType = Constants.TYPE_TEXT;
 
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_encrypt);
 
-    ButterKnife.bind(this);
 
-    initToolbar();
-
-    progressDialog = new ProgressDialog(EncryptActivity.this);
+    progressDialog = new ProgressDialog(getActivity());
     progressDialog.setMessage("Please wait...");
 
     mPresenter = new EncryptPresenterImpl(this);
+  }
+
+  @Nullable
+  @Override
+  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    View view = inflater.inflate(R.layout.fragment_encrypt, container, false);
+    ButterKnife.bind(this, view);
+
+    return view;
+  }
+
+  @Override
+  public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
 
     SharedPreferences sp = getSharedPrefs();
     String filePath = sp.getString(Constants.PREF_COVER_PATH, "");
@@ -167,18 +180,6 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
 
     if (isCoverSet) {
       setCoverImage(new File(filePath));
-    }
-  }
-
-  @Override
-  public void initToolbar() {
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-    setSupportActionBar(toolbar);
-
-    ActionBar actionBar = getSupportActionBar();
-    if (actionBar != null) {
-      actionBar.setDisplayHomeAsUpEnabled(true);
-      actionBar.setTitle("Encryption");
     }
   }
 
@@ -207,7 +208,7 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
     File file = new File(android.os.Environment
       .getExternalStorageDirectory(), "temp.png");
 
-    Uri imageUri = FileProvider.getUriForFile(this, "alexparunov", file);
+    Uri imageUri = FileProvider.getUriForFile(getContext(), "alexparunov", file);
 
     intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
     startActivityForResult(intent, Constants.REQUEST_CAMERA);
@@ -225,7 +226,7 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
   }
 
   @Override
-  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
 
     if (resultCode == RESULT_OK) {
@@ -233,7 +234,7 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
         mPresenter.selectImageCamera(whichImage);
       } else if (requestCode == Constants.SELECT_FILE) {
         Uri selectedImageUri = data.getData();
-        String tempPath = getPath(selectedImageUri, EncryptActivity.this);
+        String tempPath = getPath(selectedImageUri, getActivity());
         mPresenter.selectImage(whichImage, tempPath);
       }
     }
@@ -250,7 +251,7 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
 
   @Override
   public void startStegoActivity(String filePath) {
-    Intent intent = new Intent(EncryptActivity.this, StegoActivity.class);
+    Intent intent = new Intent(getContext(), StegoActivity.class);
     intent.putExtra(Constants.EXTRA_STEGO_IMAGE_PATH, filePath);
     startActivity(intent);
   }
@@ -263,7 +264,7 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
   @Override
   public void setCoverImage(File file) {
     showProgressDialog();
-    Picasso.with(this)
+    Picasso.with(getContext())
       .load(file)
       .fit()
       .placeholder(R.mipmap.ic_launcher)
@@ -285,7 +286,7 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
   @Override
   public void setSecretImage(File file) {
     showProgressDialog();
-    Picasso.with(this)
+    Picasso.with(getContext())
       .load(file)
       .fit()
       .placeholder(R.mipmap.ic_launcher)
@@ -306,7 +307,7 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
 
   @Override
   public void showToast(int message) {
-    StandardMethods.showToast(this, message);
+    StandardMethods.showToast(getContext(), message);
   }
 
   @Override
@@ -325,6 +326,6 @@ public class EncryptActivity extends AppCompatActivity implements EncryptView {
 
   @Override
   public SharedPreferences getSharedPrefs() {
-    return getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+    return getActivity().getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
   }
 }

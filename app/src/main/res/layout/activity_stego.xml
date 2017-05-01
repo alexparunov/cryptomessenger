@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="alexparunov.stegomessenger.activities.stego.StegoActivity">
+    tools:context="alexparunov.stegomessenger.activities_fragments.stego.StegoActivity">
 
   <android.support.v7.widget.Toolbar
       android:id="@+id/toolbar"

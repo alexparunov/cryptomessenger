@@ -1,4 +1,6 @@
-package alexparunov.stegomessenger.activities.decrypt;
+package alexparunov.stegomessenger.activities_fragments.decrypt;
+
+import static android.app.Activity.RESULT_OK;
 
 import android.Manifest;
 import android.app.Activity;
@@ -12,11 +14,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
@@ -30,17 +34,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DecryptActivity extends AppCompatActivity implements DecryptView {
+public class DecryptFragment extends Fragment implements DecryptView {
 
   @BindView(R.id.ivStegoImage)
   ImageView ivStegoImage;
 
   @OnClick(R.id.ivStegoImage)
   public void onStegoImageClick() {
-    if (ContextCompat.checkSelfPermission(getApplicationContext(),
+    if (ContextCompat.checkSelfPermission(getActivity(),
       Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-      ActivityCompat.requestPermissions(DecryptActivity.this,
+      ActivityCompat.requestPermissions(getActivity(),
         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
         Constants.PERMISSIONS_EXTERNAL_STORAGE);
 
@@ -64,29 +68,23 @@ public class DecryptActivity extends AppCompatActivity implements DecryptView {
   private boolean isSISelected = false;
 
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_decrypt);
 
-    ButterKnife.bind(this);
-
-    progressDialog = new ProgressDialog(this);
+    progressDialog = new ProgressDialog(getContext());
     progressDialog.setMessage("Please wait...");
 
     mPresenter = new DecryptPresenterImpl(this);
-    initToolbar();
   }
 
+  @Nullable
   @Override
-  public void initToolbar() {
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-    setSupportActionBar(toolbar);
+  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    View view = inflater.inflate(R.layout.fragment_decrypt, container, false);
 
-    ActionBar actionBar = getSupportActionBar();
-    if (actionBar != null) {
-      actionBar.setDisplayHomeAsUpEnabled(true);
-      actionBar.setTitle("Decryption");
-    }
+    ButterKnife.bind(this, view);
+
+    return view;
   }
 
   @Override
@@ -114,14 +112,14 @@ public class DecryptActivity extends AppCompatActivity implements DecryptView {
   }
 
   @Override
-  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
 
     if (resultCode == RESULT_OK) {
       if (requestCode == Constants.SELECT_FILE) {
         Uri selectedImageUri = data.getData();
-        String tempPath = getPath(selectedImageUri, DecryptActivity.this);
-        if(tempPath != null) {
+        String tempPath = getPath(selectedImageUri, getActivity());
+        if (tempPath != null) {
           mPresenter.selectImage(tempPath);
         }
       }
@@ -130,7 +128,7 @@ public class DecryptActivity extends AppCompatActivity implements DecryptView {
 
   @Override
   public void startDecryptResultActivity(String secretMessage, String secretImagePath) {
-    Intent intent = new Intent(DecryptActivity.this, DecryptResultActivity.class);
+    Intent intent = new Intent(getContext(), DecryptResultActivity.class);
 
     if (secretMessage != null) {
       intent.putExtra(Constants.EXTRA_SECRET_TEXT_RESULT, secretMessage);
@@ -159,7 +157,7 @@ public class DecryptActivity extends AppCompatActivity implements DecryptView {
   @Override
   public void setStegoImage(File file) {
     showProgressDialog();
-    Picasso.with(this)
+    Picasso.with(getContext())
       .load(file)
       .fit()
       .placeholder(R.mipmap.ic_launcher)
@@ -170,7 +168,7 @@ public class DecryptActivity extends AppCompatActivity implements DecryptView {
 
   @Override
   public void showToast(int message) {
-    StandardMethods.showToast(this, message);
+    StandardMethods.showToast(getContext(), message);
   }
 
   @Override

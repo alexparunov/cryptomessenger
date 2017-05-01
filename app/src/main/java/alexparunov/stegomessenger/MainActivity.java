@@ -1,29 +1,30 @@
 package alexparunov.stegomessenger;
 
-import android.content.Intent;
+import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
-import alexparunov.stegomessenger.activities.decrypt.DecryptActivity;
-import alexparunov.stegomessenger.activities.encrypt.EncryptActivity;
+import java.util.ArrayList;
+import java.util.List;
+
+import alexparunov.stegomessenger.activities_fragments.decrypt.DecryptFragment;
+import alexparunov.stegomessenger.activities_fragments.encrypt.EncryptFragment;
+import alexparunov.stegomessenger.adapters.ViewPagerAdapter;
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
-  @OnClick({R.id.bAMEncrypt, R.id.bAMDecrypt})
-  public void onButtonClick(View view) {
-    if(view.getId() == R.id.bAMEncrypt) {
-      Intent intent = new Intent(MainActivity.this, EncryptActivity.class);
-      startActivity(intent);
-    } else if(view.getId() == R.id.bAMDecrypt) {
-      Intent intent = new Intent(MainActivity.this, DecryptActivity.class);
-      startActivity(intent);
-    }
-  }
+  @BindView(R.id.tablayout)
+  TabLayout tabLayout;
+  @BindView(R.id.viewpager)
+  ViewPager viewPager;
+
+  private ViewPagerAdapter viewPagerAdapter;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +33,10 @@ public class MainActivity extends AppCompatActivity {
 
     ButterKnife.bind(this);
 
-    initToolbar();
+    initUI();
   }
 
-  public void initToolbar() {
+  private void initUI() {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
@@ -44,5 +45,37 @@ public class MainActivity extends AppCompatActivity {
       actionBar.setDisplayHomeAsUpEnabled(false);
       actionBar.setTitle("Crypto Messenger");
     }
+
+    List<Fragment> tabs = new ArrayList<>();
+    tabs.add(new EncryptFragment());
+    tabs.add(new DecryptFragment());
+
+    viewPagerAdapter = new ViewPagerAdapter(tabs, getSupportFragmentManager());
+    viewPager.setAdapter(viewPagerAdapter);
+    setSupportActionBar(toolbar);
+
+    tabLayout.addTab(tabLayout.newTab().setText("Encryption"));
+    tabLayout.addTab(tabLayout.newTab().setText("Decryption"));
+    tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+    viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+    tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+      @Override
+      public void onTabSelected(TabLayout.Tab tab) {
+        viewPager.setCurrentItem(tab.getPosition());
+      }
+
+      @Override
+      public void onTabUnselected(TabLayout.Tab tab) {
+
+      }
+
+      @Override
+      public void onTabReselected(TabLayout.Tab tab) {
+
+      }
+    });
   }
+
 }

@@ -1,4 +1,4 @@
-package alexparunov.stegomessenger.activities.decrypt;
+package alexparunov.stegomessenger.activities_fragments.decrypt;
 
 import android.graphics.Bitmap;
 import android.os.Environment;

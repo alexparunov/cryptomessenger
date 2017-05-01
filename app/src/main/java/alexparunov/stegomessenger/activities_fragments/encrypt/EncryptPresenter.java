@@ -1,4 +1,4 @@
-package alexparunov.stegomessenger.activities.encrypt;
+package alexparunov.stegomessenger.activities_fragments.encrypt;
 
 interface EncryptPresenter {
 

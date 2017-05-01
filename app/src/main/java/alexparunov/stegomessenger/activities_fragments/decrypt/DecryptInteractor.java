@@ -1,4 +1,4 @@
-package alexparunov.stegomessenger.activities.decrypt;
+package alexparunov.stegomessenger.activities_fragments.decrypt;
 
 /**
  * Created by Alexander Parunov on 3/10/17.

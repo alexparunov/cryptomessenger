@@ -1,4 +1,4 @@
-package alexparunov.stegomessenger.activities.stego;
+package alexparunov.stegomessenger.activities_fragments.stego;
 
 /**
  * Created by Alexander Parunov on 2/21/17.

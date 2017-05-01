@@ -1,4 +1,4 @@
-package alexparunov.stegomessenger.activities.stego;
+package alexparunov.stegomessenger.activities_fragments.stego;
 
 import android.content.Intent;
 import android.net.Uri;

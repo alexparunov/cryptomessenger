@@ -34,22 +34,12 @@
       </intent-filter>
     </activity>
     <activity
-        android:name="alexparunov.stegomessenger.activities.encrypt.EncryptActivity"
+        android:name="alexparunov.stegomessenger.activities_fragments.stego.StegoActivity"
         android:parentActivityName="alexparunov.stegomessenger.MainActivity"
         android:screenOrientation="portrait">
     </activity>
     <activity
-        android:name="alexparunov.stegomessenger.activities.stego.StegoActivity"
-        android:parentActivityName="alexparunov.stegomessenger.activities.encrypt.EncryptActivity"
-        android:screenOrientation="portrait">
-    </activity>
-    <activity
-        android:name="alexparunov.stegomessenger.activities.decrypt.DecryptActivity"
-        android:parentActivityName="alexparunov.stegomessenger.MainActivity"
-        android:screenOrientation="portrait">
-    </activity>
-    <activity
-        android:name="alexparunov.stegomessenger.activities.decrypt.DecryptResultActivity"
+        android:name="alexparunov.stegomessenger.activities_fragments.decrypt.DecryptResultActivity"
         android:parentActivityName="alexparunov.stegomessenger.MainActivity"
         android:screenOrientation="portrait">
     </activity>
