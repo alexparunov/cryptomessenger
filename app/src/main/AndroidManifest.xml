@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="alexparunov.cryptomessenger">
+          package="alexparunov.stegomessenger">
 
   <uses-permission android:name="android.permission.CAMERA"/>
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -25,7 +25,7 @@
     </provider>
 
     <activity
-        android:name=".MainActivity"
+        android:name="alexparunov.stegomessenger.MainActivity"
         android:screenOrientation="portrait">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
@@ -34,23 +34,23 @@
       </intent-filter>
     </activity>
     <activity
-        android:name=".activities.encrypt.EncryptActivity"
-        android:parentActivityName=".MainActivity"
+        android:name="alexparunov.stegomessenger.activities.encrypt.EncryptActivity"
+        android:parentActivityName="alexparunov.stegomessenger.MainActivity"
         android:screenOrientation="portrait">
     </activity>
     <activity
-        android:name=".activities.stego.StegoActivity"
-        android:parentActivityName=".activities.encrypt.EncryptActivity"
+        android:name="alexparunov.stegomessenger.activities.stego.StegoActivity"
+        android:parentActivityName="alexparunov.stegomessenger.activities.encrypt.EncryptActivity"
         android:screenOrientation="portrait">
     </activity>
     <activity
-        android:name=".activities.decrypt.DecryptActivity"
-        android:parentActivityName=".MainActivity"
+        android:name="alexparunov.stegomessenger.activities.decrypt.DecryptActivity"
+        android:parentActivityName="alexparunov.stegomessenger.MainActivity"
         android:screenOrientation="portrait">
     </activity>
     <activity
-        android:name=".activities.decrypt.DecryptResultActivity"
-        android:parentActivityName=".MainActivity"
+        android:name="alexparunov.stegomessenger.activities.decrypt.DecryptResultActivity"
+        android:parentActivityName="alexparunov.stegomessenger.MainActivity"
         android:screenOrientation="portrait">
     </activity>
   </application>
