@@ -1,7 +1,7 @@
 <resources>
 
   <!--View Titles-->
-  <string name="app_name">CryptoMessenger</string>
+  <string name="app_name">StegoMessenger</string>
   <string name="select_image_title">Cover Image</string>
   <string name="stego_image_title">Result Image</string>
   <string name="decrypt_result_title">Secret Message</string>
