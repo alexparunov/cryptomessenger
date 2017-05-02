@@ -149,6 +149,7 @@ public class EncryptFragment extends Fragment implements EncryptView {
   private EncryptPresenter mPresenter;
   private int whichImage = -1;
   private int secretMessageType = Constants.TYPE_TEXT;
+  private String secretImagePath = "";
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -251,6 +252,9 @@ public class EncryptFragment extends Fragment implements EncryptView {
 
   @Override
   public void startStegoActivity(String filePath) {
+    if(!secretImagePath.isEmpty()) {
+      new File(secretImagePath).delete();
+    }
     Intent intent = new Intent(getContext(), StegoActivity.class);
     intent.putExtra(Constants.EXTRA_STEGO_IMAGE_PATH, filePath);
     startActivity(intent);
@@ -293,6 +297,7 @@ public class EncryptFragment extends Fragment implements EncryptView {
       .into(ivSecretImage);
     stopProgressDialog();
     whichImage = -1;
+    secretImagePath = file.getAbsolutePath();
   }
 
   @Override
