@@ -1,4 +1,4 @@
-package alexparunov.stegonographer;
+package alexparunov.steganographer;
 
 import org.junit.Test;
 

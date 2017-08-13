@@ -1,4 +1,4 @@
-package alexparunov.stegonographer.activities.decrypt;
+package alexparunov.steganographer.activities.decrypt;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -6,10 +6,10 @@ import android.os.AsyncTask;
 
 import java.util.Map;
 
-import alexparunov.stegonographer.R;
-import alexparunov.stegonographer.algorithms.Extracting;
-import alexparunov.stegonographer.utils.Constants;
-import alexparunov.stegonographer.utils.HelperMethods;
+import alexparunov.steganographer.R;
+import alexparunov.steganographer.algorithms.Extracting;
+import alexparunov.steganographer.utils.Constants;
+import alexparunov.steganographer.utils.HelperMethods;
 
 /**
  * Created by Alexander Parunov on 3/10/17.

@@ -1,4 +1,4 @@
-package alexparunov.stegonographer.utils;
+package alexparunov.steganographer.utils;
 
 import android.graphics.Color;
 

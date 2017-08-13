@@ -1,4 +1,4 @@
-package alexparunov.stegonographer.activities.encrypt;
+package alexparunov.steganographer.activities.encrypt;
 
 import android.Manifest;
 import android.app.Activity;
@@ -31,10 +31,10 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
-import alexparunov.stegonographer.R;
-import alexparunov.stegonographer.activities.stego.StegoActivity;
-import alexparunov.stegonographer.utils.Constants;
-import alexparunov.stegonographer.utils.StandardMethods;
+import alexparunov.steganographer.R;
+import alexparunov.steganographer.activities.stego.StegoActivity;
+import alexparunov.steganographer.utils.Constants;
+import alexparunov.steganographer.utils.StandardMethods;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;

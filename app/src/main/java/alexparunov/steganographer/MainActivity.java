@@ -1,4 +1,4 @@
-package alexparunov.stegonographer;
+package alexparunov.steganographer;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
@@ -7,8 +7,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import alexparunov.stegonographer.activities.decrypt.DecryptActivity;
-import alexparunov.stegonographer.activities.encrypt.EncryptActivity;
+import alexparunov.steganographer.activities.decrypt.DecryptActivity;
+import alexparunov.steganographer.activities.encrypt.EncryptActivity;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 

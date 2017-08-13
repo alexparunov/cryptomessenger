@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="alexparunov.cryptomessenger.MainActivity">
+    tools:context="alexparunov.steganographer.MainActivity">
 
   <android.support.v7.widget.Toolbar
       android:id="@+id/toolbar"

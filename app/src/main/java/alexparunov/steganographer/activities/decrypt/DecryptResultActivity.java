@@ -1,4 +1,4 @@
-package alexparunov.stegonographer.activities.decrypt;
+package alexparunov.steganographer.activities.decrypt;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,8 +13,8 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
-import alexparunov.stegonographer.R;
-import alexparunov.stegonographer.utils.Constants;
+import alexparunov.steganographer.R;
+import alexparunov.steganographer.utils.Constants;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

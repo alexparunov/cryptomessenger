@@ -1,4 +1,4 @@
-package alexparunov.stegonographer.algorithms;
+package alexparunov.steganographer.algorithms;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -8,8 +8,8 @@ import org.jetbrains.annotations.Contract;
 import java.util.HashMap;
 import java.util.Map;
 
-import alexparunov.stegonographer.utils.Constants;
-import alexparunov.stegonographer.utils.StandardMethods;
+import alexparunov.steganographer.utils.Constants;
+import alexparunov.steganographer.utils.StandardMethods;
 
 public class Extracting {
 

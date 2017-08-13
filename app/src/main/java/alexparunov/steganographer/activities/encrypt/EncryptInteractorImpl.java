@@ -1,9 +1,9 @@
-package alexparunov.stegonographer.activities.encrypt;
+package alexparunov.steganographer.activities.encrypt;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
-import alexparunov.stegonographer.algorithms.Embedding;
+import alexparunov.steganographer.algorithms.Embedding;
 
 class EncryptInteractorImpl implements EncryptInteractor {
 

@@ -1,11 +1,11 @@
-package alexparunov.stegonographer.activities.stego;
+package alexparunov.steganographer.activities.stego;
 
 import android.content.Intent;
 import android.net.Uri;
 
 import java.io.File;
 
-import alexparunov.stegonographer.R;
+import alexparunov.steganographer.R;
 
 /**
  * Created by Alexander Parunov on 2/21/17.

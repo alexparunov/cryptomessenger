@@ -1,4 +1,4 @@
-package alexparunov.stegonographer.algorithms;
+package alexparunov.steganographer.algorithms;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -8,9 +8,9 @@ import org.jetbrains.annotations.Contract;
 
 import java.util.Random;
 
-import alexparunov.stegonographer.utils.Constants;
-import alexparunov.stegonographer.utils.HelperMethods;
-import alexparunov.stegonographer.utils.StandardMethods;
+import alexparunov.steganographer.utils.Constants;
+import alexparunov.steganographer.utils.HelperMethods;
+import alexparunov.steganographer.utils.StandardMethods;
 
 public class Embedding {
 

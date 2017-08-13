@@ -1,4 +1,4 @@
-package alexparunov.stegonographer;
+package alexparunov.steganographer;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

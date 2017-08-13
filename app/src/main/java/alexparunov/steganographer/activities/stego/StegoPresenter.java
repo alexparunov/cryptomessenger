@@ -1,4 +1,4 @@
-package alexparunov.stegonographer.activities.stego;
+package alexparunov.steganographer.activities.stego;
 
 /**
  * Created by Alexander Parunov on 2/21/17.

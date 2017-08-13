@@ -1,4 +1,4 @@
-package alexparunov.stegonographer.activities.stego;
+package alexparunov.steganographer.activities.stego;
 
 import android.content.Intent;
 

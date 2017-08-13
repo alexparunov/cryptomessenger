@@ -1,4 +1,4 @@
-package alexparunov.stegonographer.activities.encrypt;
+package alexparunov.steganographer.activities.encrypt;
 
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;

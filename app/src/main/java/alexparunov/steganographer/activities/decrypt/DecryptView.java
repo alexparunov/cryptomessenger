@@ -1,4 +1,4 @@
-package alexparunov.stegonographer.activities.decrypt;
+package alexparunov.steganographer.activities.decrypt;
 
 import android.graphics.Bitmap;
 

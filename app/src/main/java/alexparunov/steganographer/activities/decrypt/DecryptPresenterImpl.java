@@ -1,4 +1,4 @@
-package alexparunov.stegonographer.activities.decrypt;
+package alexparunov.steganographer.activities.decrypt;
 
 import android.graphics.Bitmap;
 import android.os.Environment;
@@ -8,8 +8,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import alexparunov.stegonographer.R;
-import alexparunov.stegonographer.utils.StandardMethods;
+import alexparunov.steganographer.R;
+import alexparunov.steganographer.utils.StandardMethods;
 
 
 /**

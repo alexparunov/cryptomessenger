@@ -1,4 +1,4 @@
-package alexparunov.stegonographer.activities.encrypt;
+package alexparunov.steganographer.activities.encrypt;
 
 interface EncryptPresenter {
 

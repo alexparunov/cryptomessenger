@@ -1,4 +1,4 @@
-package alexparunov.stegonographer.activities.encrypt;
+package alexparunov.steganographer.activities.encrypt;
 
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -12,9 +12,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import alexparunov.stegonographer.R;
-import alexparunov.stegonographer.utils.Constants;
-import alexparunov.stegonographer.utils.StandardMethods;
+import alexparunov.steganographer.R;
+import alexparunov.steganographer.utils.Constants;
+import alexparunov.steganographer.utils.StandardMethods;
 
 class EncryptPresenterImpl implements EncryptPresenter, EncryptInteractorImpl.EncryptInteractorListener {
 
